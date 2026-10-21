@@ -1,0 +1,117 @@
+TAP version 13
+# Subtest: getSuperCategory matches build
+ok 1 - getSuperCategory matches build
+  ---
+  duration_ms: 2.0658
+  ...
+# Subtest: getSuperCategory matches test
+ok 2 - getSuperCategory matches test
+  ---
+  duration_ms: 0.4321
+  ...
+# Subtest: getSuperCategory matches deploy
+ok 3 - getSuperCategory matches deploy
+  ---
+  duration_ms: 0.3412
+  ...
+# Subtest: getSuperCategory defaults to Ostalo
+ok 4 - getSuperCategory defaults to Ostalo
+  ---
+  duration_ms: 0.3363
+  ...
+# Subtest: criteria extraction ignores absent IDs and removes duplicates
+ok 5 - criteria extraction ignores absent IDs and removes duplicates
+  ---
+  duration_ms: 2.8473
+  ...
+# Subtest: validation distinguishes missing questions and orphaned rule references
+ok 6 - validation distinguishes missing questions and orphaned rule references
+  ---
+  duration_ms: 0.5043
+  ...
+# Subtest: validation accepts missing optional collections
+ok 7 - validation accepts missing optional collections
+  ---
+  duration_ms: 0.2199
+  ...
+# Subtest: missing questions retain their metadata and exclude referenced questions
+ok 8 - missing questions retain their metadata and exclude referenced questions
+  ---
+  duration_ms: 0.3402
+  ...
+# Subtest: section score handles all supported types and ignores unsupported types
+ok 9 - section score handles all supported types and ignores unsupported types
+  ---
+  duration_ms: 0.3779
+  ...
+# Subtest: section score rounds percentages and handles empty sections
+ok 10 - section score rounds percentages and handles empty sections
+  ---
+  duration_ms: 0.1744
+  ...
+# Subtest: validateRulesAgainstQuestionnaire - duplicate references - returns unique IDs
+ok 11 - validateRulesAgainstQuestionnaire - duplicate references - returns unique IDs
+  ---
+  duration_ms: 0.2016
+  ...
+# Subtest: validateRulesAgainstQuestionnaire - invalid collections - throws TypeError
+ok 12 - validateRulesAgainstQuestionnaire - invalid collections - throws TypeError
+  ---
+  duration_ms: 0.6293
+  ...
+# Subtest: getMissingItemsWithMeta - empty or fully referenced input - returns empty array
+ok 13 - getMissingItemsWithMeta - empty or fully referenced input - returns empty array
+  ---
+  duration_ms: 0.2308
+  ...
+# Subtest: getMissingItemsWithMeta - several categories - preserves each question metadata
+ok 14 - getMissingItemsWithMeta - several categories - preserves each question metadata
+  ---
+  duration_ms: 0.2738
+  ...
+# Subtest: getMissingItemsWithMeta - invalid collection - throws TypeError
+ok 15 - getMissingItemsWithMeta - invalid collection - throws TypeError
+  ---
+  duration_ms: 0.1902
+  ...
+# Subtest: calculateSectionScore - two out of three positive answers - rounds to 67
+ok 16 - calculateSectionScore - two out of three positive answers - rounds to 67
+  ---
+  duration_ms: 0.1822
+  ...
+# Subtest: calculateSectionScore - zero numeric answer - counts as valid
+ok 17 - calculateSectionScore - zero numeric answer - counts as valid
+  ---
+  duration_ms: 0.1353
+  ...
+# Subtest: calculateSectionScore - missing or invalid typed answers - scores zero
+ok 18 - calculateSectionScore - missing or invalid typed answers - scores zero
+  ---
+  duration_ms: 0.2187
+  ...
+# Subtest: calculateSectionScore - invalid required arguments - throws TypeError
+ok 19 - calculateSectionScore - invalid required arguments - throws TypeError
+  ---
+  duration_ms: 0.3942
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1874.5662
+# start of coverage report
+# -------------------------------------------------------------------------------------------------------------------------------------
+# file                   | line % | branch % | funcs % | uncovered lines
+# -------------------------------------------------------------------------------------------------------------------------------------
+# src\utils.js           |   8.47 |   100.00 |    8.33 | 2-11 16-36 39-47 50-64 68-102 105-108 111-254 269-294 297-308 311-347 350-425
+# src\utils\validator.js | 100.00 |   100.00 |  100.00 | 
+# test\utils.test.js     | 100.00 |   100.00 |  100.00 | 
+# test\validator.test.js | 100.00 |   100.00 |  100.00 | 
+# -------------------------------------------------------------------------------------------------------------------------------------
+# all files              |  42.37 |   100.00 |   78.43 |
+# -------------------------------------------------------------------------------------------------------------------------------------
+# end of coverage report

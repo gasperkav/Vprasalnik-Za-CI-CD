@@ -49,3 +49,5 @@ Thumbs.db
 
 .claude/
 .claude
+# Generated local coverage (CI uploads it as an artifact)
+coverage/

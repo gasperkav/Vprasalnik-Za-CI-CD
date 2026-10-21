@@ -1,0 +1,5 @@
+{
+  "exitCode": 1,
+  "expectation": "nonzero exit stops dependent CI builds",
+  "coverageCreated": true
+}

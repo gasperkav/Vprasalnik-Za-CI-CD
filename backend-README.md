@@ -420,11 +420,7 @@ Primer:
 ```env
 PORT=3002
 JWT_SECRET=dev_secret_change_in_prod
-DB_HOST=db
-DB_PORT=5432
-DB_NAME=vprasalnik
-DB_USER=postgres
-DB_PASSWORD=postgres
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/vprasalnik
 ```
 
 Ta datoteka se ne uporablja neposredno kot konfiguracija, ampak služi kot predloga.
@@ -484,3 +480,7 @@ Backend je sestavljen iz več jasno ločenih delov:
 - `vprasalnik.sql` za pripravo baze.
 
 Takšna struktura omogoča, da je backend bolj pregleden, lažje vzdrževan in ločen po odgovornostih.
+
+## Dopolnila preverjanja ZK
+
+Backend bere PORT, JWT_SECRET, FRONTEND_ORIGIN in DATABASE_URL iz okolja procesa; .env datoteke samodejno ne nalaga. Docker Compose te vrednosti nastavi neposredno. Pri ročnem zagonu jih morate izvoziti v okolje. Lokalni Compose inicializira bazo iz korenske [vprasalnik.sql](vprasalnik.sql), samo ob prvi pripravi praznega podatkovnega nosilca. Backend uporablja tudi libpqxx; CMake ga poišče v sistemu ali prenese izvorno kodo. Samodejni uvoz začetnih vprašalnikov uporablja absolutne poti /app/*.json, zato ročni zagon ni enakovreden Docker zagonu. Podrobnosti in postopki: [README_ZK.md](README_ZK.md).

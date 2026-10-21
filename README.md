@@ -239,7 +239,7 @@ Omogoča dostop do administratorskih funkcij (urejanje vprašalnikov, urejanje p
 * **Novi uporabniki:** Preko registracijskega obrazca si lahko ustvarite nov račun (dodeljena vam bo vloga `member`, ki omogoča reševanje dodeljenih vprašalnikov in pregled lastnih ocen).
 
 > [!NOTE]
-> Pri prvem zagonu baze se tabela uporabnikov samodejno inicializira s privzetim administratorjem preko SQL datoteke [vprasalnik.sql](file:///C:/CICDcevovodi/vprasalnik.sql). Če ste bazo že zagnali in tabela ne vsebuje tega uporabnika, lahko bazo ponastavite z ukazom `docker compose down -v` in nato ponovno zaženete `docker compose up --build`.
+> Pri prvem zagonu baze se tabela uporabnikov samodejno inicializira s privzetim administratorjem preko SQL datoteke [vprasalnik.sql](vprasalnik.sql). Če ste bazo že zagnali in tabela ne vsebuje tega uporabnika, lahko bazo ponastavite z ukazom `docker compose down -v` in nato ponovno zaženete `docker compose up --build`.
 
 ---
 
@@ -304,7 +304,7 @@ Ta način je namenjen razvijalcem. Za običajno uporabo je priporočljiv zagon z
 Namestitev odvisnosti:
 
 ```bash
-npm install
+npm ci
 ```
 
 Zagon frontend razvojnega strežnika:
@@ -351,3 +351,12 @@ http://193.77.152.232:5173/
 ```text
 http://localhost:5173
 ```
+
+
+## Pregled pri predmetu ZK
+
+Popis sprememb, preverjanj, standardov kodiranja in preostalih nalog je v [README_ZK.md](README_ZK.md). Za začetno stanje, razlike med operacijskimi sistemi in ročni zagon upoštevajte ta dopolnila.
+
+## ZK – druga naloga
+
+Testi treh enot, šest namernih napak, pregled kakovosti in poročilo o pokritosti: [README_ZK_2.md](README_ZK_2.md).

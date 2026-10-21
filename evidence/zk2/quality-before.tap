@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: criteria extraction ignores absent IDs and removes duplicates
+ok 1 - criteria extraction ignores absent IDs and removes duplicates
+  ---
+  duration_ms: 3.1307
+  ...
+# Subtest: validation distinguishes missing questions and orphaned rule references
+ok 2 - validation distinguishes missing questions and orphaned rule references
+  ---
+  duration_ms: 0.6086
+  ...
+# Subtest: validation accepts missing optional collections
+ok 3 - validation accepts missing optional collections
+  ---
+  duration_ms: 0.2046
+  ...
+# Subtest: missing questions retain their metadata and exclude referenced questions
+ok 4 - missing questions retain their metadata and exclude referenced questions
+  ---
+  duration_ms: 0.3424
+  ...
+# Subtest: section score handles all supported types and ignores unsupported types
+ok 5 - section score handles all supported types and ignores unsupported types
+  ---
+  duration_ms: 0.5557
+  ...
+# Subtest: section score rounds percentages and handles empty sections
+ok 6 - section score rounds percentages and handles empty sections
+  ---
+  duration_ms: 0.2869
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1054.1016

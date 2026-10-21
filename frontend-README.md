@@ -118,7 +118,7 @@ API odjemalec (`src/api.js`) pred vsako zahtevo preveri dosegljivost backend sto
 
 ## Tematski in Stilski Sistem (Theming & Styling)
 
-Celoten izgled je definiran v datoteki [style.css](file:///c:/CICDcevovodi/src/style.css) z uporabo CSS spremenljivk, ki so dopolnjene z utility razredi ogrodja TailwindCSS v4. Aplikacija ponuja nemoteno preklapljanje med **temnim** in **svetlim** načinom.
+Celoten izgled je definiran v datoteki [style.css](src/style.css) z uporabo CSS spremenljivk, ki so dopolnjene z utility razredi ogrodja TailwindCSS v4. Aplikacija ponuja nemoteno preklapljanje med **temnim** in **svetlim** načinom.
 
 ### Dinamično preklapljanje tem (Light / Dark Mode):
 Tema se preklaplja preko gumba v glavi spletne strani (`Header.jsx`), ki doda ali odstrani `.light` razred na korenskem elementu dokumenta (`<html>`). Izbrana tema se shranjuje v `localStorage` uporabnika in se ob ponovnem obisku samodejno naloži preko inicializacijskega skripta v `index.html` .
@@ -129,11 +129,11 @@ Tema se preklaplja preko gumba v glavi spletne strani (`Header.jsx`), ki doda al
 ## Zagon in Razvoj (How to Run)
 
 ### Lokalni zagon (brez Dockerja)
-Za lokalni zagon sprednjega dela potrebujete nameščen **Node.js** (različica 18 ali novejša).
+Za lokalni zagon sprednjega dela potrebujete nameščen **Node.js** (različica 20.19 ali novejša znotraj veje 20 oziroma 22.12 ali novejša).
 
 1. Namestite odvisnosti:
    ```bash
-   npm install
+   npm ci
    ```
 2. Zaženite razvojni strežnik Vite:
    ```bash
@@ -149,3 +149,8 @@ Za zagon celotnega okolja (sprednji del, zaledni del in PostgreSQL baza) v koren
 docker compose up --build
 ```
 Razvojni vsebnik za frontend samodejno preslika lokalno mapo v `/app`, kar omogoča takojšnje posodabljanje vmesnika ob shranjevanju datotek (Hot Reload).
+
+
+### Naslov zalednega strežnika pri razvoju
+
+Vite privzeto posreduje /api in /health na http://localhost:3002. V Docker Compose je API_PROXY_TARGET nastavljen na http://backend:3002. Za drug cilj nastavite okoljsko spremenljivko API_PROXY_TARGET pred zagonom Vite. Celoten postopek in omejitve preverjanja: [README_ZK.md](README_ZK.md).

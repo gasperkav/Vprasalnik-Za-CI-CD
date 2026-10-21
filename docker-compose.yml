@@ -16,6 +16,8 @@ services:
       - db
 
   frontend:
+    environment:
+      - API_PROXY_TARGET=http://backend:3002
     build:
       context: .
       dockerfile: Dockerfile.frontend

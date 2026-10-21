@@ -1,0 +1,91 @@
+{
+  "baseline": {
+    "exitCode": 0,
+    "failedTests": []
+  },
+  "results": [
+    {
+      "id": "V1",
+      "unit": "validateRulesAgainstQuestionnaire",
+      "from": "!allItemIds.has(id)",
+      "to": "allItemIds.has(id)",
+      "description": "Invert orphan reference condition",
+      "exitCode": 1,
+      "failedTests": [
+        "validation distinguishes missing questions and orphaned rule references",
+        "validateRulesAgainstQuestionnaire - duplicate references - returns unique IDs"
+      ],
+      "detected": true
+    },
+    {
+      "id": "V2",
+      "unit": "validateRulesAgainstQuestionnaire",
+      "from": "Object.keys(rule.improvement_suggestions).forEach(id => referencedIds.add(id));",
+      "to": "/* Deliberately ignore improvement suggestions. */",
+      "description": "Ignore improvement suggestion references",
+      "exitCode": 1,
+      "failedTests": [
+        "validation distinguishes missing questions and orphaned rule references"
+      ],
+      "detected": true
+    },
+    {
+      "id": "M1",
+      "unit": "getMissingItemsWithMeta",
+      "from": "if (missingFromRules.includes(item.id))",
+      "to": "if (!missingFromRules.includes(item.id))",
+      "description": "Return referenced instead of missing items",
+      "exitCode": 1,
+      "failedTests": [
+        "missing questions retain their metadata and exclude referenced questions",
+        "getMissingItemsWithMeta - empty or fully referenced input - returns empty array",
+        "getMissingItemsWithMeta - several categories - preserves each question metadata"
+      ],
+      "detected": true
+    },
+    {
+      "id": "M2",
+      "unit": "getMissingItemsWithMeta",
+      "from": "categoryTitle: category.title",
+      "to": "categoryTitle: 'WRONG'",
+      "description": "Return wrong category title",
+      "exitCode": 1,
+      "failedTests": [
+        "missing questions retain their metadata and exclude referenced questions",
+        "getMissingItemsWithMeta - several categories - preserves each question metadata"
+      ],
+      "detected": true
+    },
+    {
+      "id": "S1",
+      "unit": "calculateSectionScore",
+      "from": "Math.round((filled / total) * 100)",
+      "to": "Math.floor((filled / total) * 100)",
+      "description": "Round down instead of nearest integer",
+      "exitCode": 1,
+      "failedTests": [
+        "calculateSectionScore - two out of three positive answers - rounds to 67"
+      ],
+      "detected": true
+    },
+    {
+      "id": "S2",
+      "unit": "calculateSectionScore",
+      "from": "answer !== undefined && answer !== null && answer !== '' && !isNaN(answer)",
+      "to": "answer && !isNaN(answer)",
+      "description": "Reject valid numeric zero",
+      "exitCode": 1,
+      "failedTests": [
+        "section score handles all supported types and ignores unsupported types",
+        "calculateSectionScore - zero numeric answer - counts as valid"
+      ],
+      "detected": true
+    }
+  ],
+  "final": {
+    "exitCode": 0,
+    "failedTests": []
+  },
+  "detected": 6,
+  "total": 6
+}

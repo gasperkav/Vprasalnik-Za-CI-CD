@@ -7,8 +7,31 @@ on:
     branches: [ main ]
 
 jobs:
+  unit-tests:
+    name: Unit Tests, Coverage and Mutations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.6
+      - name: Run unit tests with coverage
+        run: npm run test:coverage
+      - name: Verify six intentional faults are detected
+        run: npm run test:mutations
+      - name: Upload coverage and test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: |
+            coverage/
+            evidence/zk2/
+          if-no-files-found: error
+
   frontend:
-    name: Frontend Test & Build
+    needs: unit-tests
+    name: Frontend Build
     runs-on: ubuntu-latest
 
     steps:
@@ -24,13 +47,11 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Tests
-        run: npm test
-
       - name: Build Project
         run: npm run build
 
   backend:
+    needs: unit-tests
     name: Backend Build
     runs-on: ubuntu-latest
 

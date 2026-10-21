@@ -1,14 +1,20 @@
 export function extractItemIdsFromCriteria(criteria) {
-  if (!Array.isArray(criteria)) return new Set();
+  if (!Array.isArray(criteria)) {
+    return new Set();
+  }
   const ids = new Set();
-  criteria.forEach(c => { if (c.item_id) ids.add(c.item_id); });
+  criteria.forEach(criterion => {
+    if (criterion.item_id) {
+      ids.add(criterion.item_id);
+    }
+  });
   return ids;
 }
 
 export function validateRulesAgainstQuestionnaire(categories, rules) {
   const allItemIds = new Set();
-  (categories || []).forEach(cat => {
-    (cat.items || []).forEach(item => allItemIds.add(item.id));
+  (categories || []).forEach(category => {
+    (category.items || []).forEach(item => allItemIds.add(item.id));
   });
 
   const referencedIds = new Set();
@@ -28,10 +34,10 @@ export function validateRulesAgainstQuestionnaire(categories, rules) {
 export function getMissingItemsWithMeta(categories, rules) {
   const { missingFromRules } = validateRulesAgainstQuestionnaire(categories, rules);
   const result = [];
-  (categories || []).forEach(cat => {
-    (cat.items || []).forEach(item => {
+  (categories || []).forEach(category => {
+    (category.items || []).forEach(item => {
       if (missingFromRules.includes(item.id)) {
-        result.push({ id: item.id, label: item.label, categoryTitle: cat.title, type: item.type });
+        result.push({ id: item.id, label: item.label, categoryTitle: category.title, type: item.type });
       }
     });
   });
@@ -40,25 +46,35 @@ export function getMissingItemsWithMeta(categories, rules) {
 
 export function calculateSectionScore(category, answers) {
   const items = category.items || [];
-  if (items.length === 0) return { score: 0, answered: 0, total: 0 };
+  if (items.length === 0) {
+    return { score: 0, answered: 0, total: 0 };
+  }
 
   let filled = 0;
   let total = 0;
 
   items.forEach(item => {
-    const ans = answers[item.id];
+    const answer = answers[item.id];
     if (item.type === 'yes_no_na' || item.type === 'checkbox') {
       total++;
-      if (ans === true || ans === 'DA') filled++;
+      if (answer === true || answer === 'DA') {
+        filled++;
+      }
     } else if (item.type === 'text') {
       total++;
-      if (ans && typeof ans === 'string' && ans.trim() !== '') filled++;
+      if (answer && typeof answer === 'string' && answer.trim() !== '') {
+        filled++;
+      }
     } else if (item.type === 'numeric') {
       total++;
-      if (ans !== undefined && ans !== null && ans !== '' && !isNaN(ans)) filled++;
+      if (answer !== undefined && answer !== null && answer !== '' && !isNaN(answer)) {
+        filled++;
+      }
     } else if (item.type === 'multiselect') {
       total++;
-      if (Array.isArray(ans) && ans.length > 0) filled++;
+      if (Array.isArray(answer) && answer.length > 0) {
+        filled++;
+      }
     }
   });
 

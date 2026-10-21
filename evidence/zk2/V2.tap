@@ -1,0 +1,121 @@
+TAP version 13
+# Subtest: criteria extraction ignores absent IDs and removes duplicates
+ok 1 - criteria extraction ignores absent IDs and removes duplicates
+  ---
+  duration_ms: 4.9656
+  ...
+# Subtest: validation distinguishes missing questions and orphaned rule references
+not ok 2 - validation distinguishes missing questions and orphaned rule references
+  ---
+  duration_ms: 4.2281
+  location: 'C:\\Users\\UPORAB~1\\AppData\\Local\\Temp\\zk2-mutations-XEKhvX\\test\\validator.test.js:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected ... Lines skipped
+    
+      {
+        missingFromRules: [
+    +     'test',
+          'deploy'
+    ...
+          'deleted'
+        ]
+      }
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    orphanedInRules:
+      0: 'deleted'
+    missingFromRules:
+      0: 'deploy'
+  actual:
+    orphanedInRules:
+      0: 'deleted'
+    missingFromRules:
+      0: 'test'
+      1: 'deploy'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Users/UPORAB%7E1/AppData/Local/Temp/zk2-mutations-XEKhvX/test/validator.test.js:23:10)
+    Test.runInAsyncScope (node:async_hooks:206:9)
+    Test.run (node:internal/test_runner/test:796:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:526:18)
+    Test.postRun (node:internal/test_runner/test:889:19)
+    Test.run (node:internal/test_runner/test:835:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:526:7)
+  ...
+# Subtest: validation accepts missing optional collections
+ok 3 - validation accepts missing optional collections
+  ---
+  duration_ms: 0.3791
+  ...
+# Subtest: missing questions retain their metadata and exclude referenced questions
+ok 4 - missing questions retain their metadata and exclude referenced questions
+  ---
+  duration_ms: 0.5292
+  ...
+# Subtest: section score handles all supported types and ignores unsupported types
+ok 5 - section score handles all supported types and ignores unsupported types
+  ---
+  duration_ms: 0.4121
+  ...
+# Subtest: section score rounds percentages and handles empty sections
+ok 6 - section score rounds percentages and handles empty sections
+  ---
+  duration_ms: 0.3055
+  ...
+# Subtest: validateRulesAgainstQuestionnaire - duplicate references - returns unique IDs
+ok 7 - validateRulesAgainstQuestionnaire - duplicate references - returns unique IDs
+  ---
+  duration_ms: 0.2035
+  ...
+# Subtest: validateRulesAgainstQuestionnaire - invalid collections - throws TypeError
+ok 8 - validateRulesAgainstQuestionnaire - invalid collections - throws TypeError
+  ---
+  duration_ms: 0.6457
+  ...
+# Subtest: getMissingItemsWithMeta - empty or fully referenced input - returns empty array
+ok 9 - getMissingItemsWithMeta - empty or fully referenced input - returns empty array
+  ---
+  duration_ms: 0.4316
+  ...
+# Subtest: getMissingItemsWithMeta - several categories - preserves each question metadata
+ok 10 - getMissingItemsWithMeta - several categories - preserves each question metadata
+  ---
+  duration_ms: 0.4425
+  ...
+# Subtest: getMissingItemsWithMeta - invalid collection - throws TypeError
+ok 11 - getMissingItemsWithMeta - invalid collection - throws TypeError
+  ---
+  duration_ms: 0.4205
+  ...
+# Subtest: calculateSectionScore - two out of three positive answers - rounds to 67
+ok 12 - calculateSectionScore - two out of three positive answers - rounds to 67
+  ---
+  duration_ms: 1.0629
+  ...
+# Subtest: calculateSectionScore - zero numeric answer - counts as valid
+ok 13 - calculateSectionScore - zero numeric answer - counts as valid
+  ---
+  duration_ms: 0.1954
+  ...
+# Subtest: calculateSectionScore - missing or invalid typed answers - scores zero
+ok 14 - calculateSectionScore - missing or invalid typed answers - scores zero
+  ---
+  duration_ms: 0.5926
+  ...
+# Subtest: calculateSectionScore - invalid required arguments - throws TypeError
+ok 15 - calculateSectionScore - invalid required arguments - throws TypeError
+  ---
+  duration_ms: 0.3257
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 14
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1609.5755
