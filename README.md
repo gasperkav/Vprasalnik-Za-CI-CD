@@ -359,4 +359,4 @@ Popis sprememb, preverjanj, standardov kodiranja in preostalih nalog je v [READM
 
 ## ZK – druga naloga
 
-Testi treh enot, šest namernih napak, pregled kakovosti in poročilo o pokritosti: [README_ZK_2.md](README_ZK_2.md).
+Nova postavitev testiranja: `npm test` in `npm run test:coverage`. Specifikacija treh poslovnih enot, dodatni testi odložišča, lokalni rezultati in CI poročila: [README_ZK_2.md](README_ZK_2.md).

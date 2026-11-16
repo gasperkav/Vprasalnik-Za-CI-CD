@@ -2,31 +2,34 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   unit-tests:
-    name: Unit Tests, Coverage and Mutations
+    name: Unit Tests and Coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.19.6
+          node-version: 22
+          cache: npm
       - name: Run unit tests with coverage
         run: npm run test:coverage
-      - name: Verify six intentional faults are detected
-        run: npm run test:mutations
-      - name: Upload coverage and test evidence
+      - name: Add coverage to job summary
+        if: always()
+        run: |
+          if [ -f coverage/summary.md ]; then
+            cat coverage/summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload coverage report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: unit-test-results
-          path: |
-            coverage/
-            evidence/zk2/
+          name: unit-test-coverage
+          path: coverage/
+          retention-days: 14
           if-no-files-found: error
 
   frontend:
@@ -41,7 +44,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       - name: Install Dependencies

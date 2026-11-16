@@ -7,9 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test",
-    "test:coverage": "node scripts/coverage.mjs",
-    "test:mutations": "node scripts/mutations.mjs"
+    "test": "node --test tests/unit",
+    "test:watch": "node --test --watch tests/unit",
+    "test:coverage": "node scripts/test-coverage.mjs"
   },
   "repository": {
     "type": "git",

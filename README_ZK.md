@@ -2,6 +2,8 @@
 
 Projekt: **Vprašalnik-Za-CI-CD**. Datum pregleda: **20. 10. 2026**.
 
+> Zgodovinski pregled prve naloge. Testi, ukazi in rezultati v tem dokumentu opisujejo takratno stanje. Aktualna postavitev testiranja je v [README_ZK_2.md](README_ZK_2.md).
+
 Ta dokument vsebuje pregled lokalne kopije projekta, izvedene spremembe in rezultate preverjanj po navodilu naloge. Dokument še ni dokaz uspešne vzpostavitve celotne aplikacije: zagon Dockerja, uporabniški scenariji in individualni preizkusi članov ekipe ostajajo neizvedeni. Pregled je izvedel ChatGPT/Codex na uporabnikovo zahtevo; to niso samostojna opažanja članov ekipe.
 
 ## 1. Začetno stanje in način preverjanja

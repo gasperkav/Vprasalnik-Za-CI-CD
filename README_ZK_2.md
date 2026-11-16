@@ -1,89 +1,106 @@
-# ZK – 2. naloga: testiranje enot
+# ZK – nova postavitev testiranja enot
 
-Datum: 21. 10. 2026. Projekt: Vprašalnik-Za-CI-CD.
+Datum: 16. 11. 2026.
 
-## Izbrane enote in pričakovano delovanje
+## Ogrodje in zagon
 
-Izbrane so tri funkcije iz src/utils/validator.js. Specifikacija se nanaša na neposredna vprašanja category.items; rekurzivno preverjanje dreves vprašanj ni del teh funkcij. Produkcijske kode pri tej nalogi nismo spreminjali.
+Uporabljamo vgrajeni **Node.js test runner (`node:test`)**, stroge trditve `node:assert/strict`, native `mock.fn` in V8-merjenje pokritosti. Za teste ni potrebna namestitev paketov, baza, Docker, omrežje ali brskalnik. Lokalno preverjeno z Node.js 20.19.6; CI uporablja Node.js 22. Priporočen je Node.js 22.
 
-| Enota | Utemeljitev | Pogodba in pričakovano delovanje |
-|---|---|---|
-| validateRulesAgainstQuestionnaire | Množice ID-jev, primerjava referenc in pogojna vključitev priporočil | Zbere vprašanja in reference iz kriterijev ter improvement_suggestions. Vrne enolične orphanedInRules in missingFromRules. Manjkajoče oziroma null neobvezne zbirke so prazne; objekt namesto zahtevane zbirke je neveljaven in sproži TypeError. |
-| getMissingItemsWithMeta | Izbor nepokritih vprašanj in povezovanje s kategorijami | Vrne samo nepokrita vprašanja z id, label, categoryTitle in type iz ustrezne kategorije. Prazni ali povsem pokriti podatki dajo []. Neveljavna zbirka sproži TypeError. Rezultata ne izračunavamo s testirano funkcijo. |
-| calculateSectionScore | Izračun deleža, razvejanje glede na pet tipov odgovorov in zaokroževanje | yes_no_na/checkbox štejeta true ali DA; text neprazno besedilo po trim; numeric prisotno neprazno številsko vrednost, tudi 0; multiselect neprazno polje. Nepodprti tipi ne povečujejo imenovalca. Rezultat je najbližje celo število odstotkov; prazen sklop vrne ničle. Neveljaven obvezen argument sproži TypeError. |
+Vitest je bil prvotna izbira, vendar je okolje zavrnilo dostop do registra npm (`EACCES`), lokalni predpomnilnik pa ga nima. Zato nova postavitev uporablja dejansko razpoložljivo ogrodje. Paketov Vitest ni v `package.json`; lockfile ostaja veljaven. To niso predelani stari testi: vsi testni scenariji so napisani na novo.
 
-Pri oceni answered pomeni število pozitivno oziroma ustrezno izpolnjenih odgovorov, ne vseh podanih odgovorov: NE, false in NA ne štejejo. To je sprejeta delovna pogodba za te teste; ekipa naj potrdi, da ustreza namenu aplikacije. Numeric trenutno uporablja JavaScript pretvorbo isNaN; ne trdimo, da funkcija strogo zavrača vse nenavadne vrednosti, kot so boolean ali neskončnost. Strožja poslovna validacija zahteva ločeno odločitev. Testi pokrivajo dokumentirane običajne in izbrane neveljavne vhode, ne vseh možnih JS objektov.
+Iz korenske mape projekta:
 
-## Uporaba agenta in specifikacija za generiranje
-
-Orodje: OpenAI ChatGPT/Codex, en agent brez podagentov. Uporabnik je naročil izvedbo druge naloge. Spodaj je dokumentirana specifikacija generiranja in pregleda (ni predstavljena kot dobesedni prepis uporabnikovega ukaza):
-
-> Uporabi obstoječi node:test in node:assert/strict brez novih zunanjih odvisnosti. Za validateRulesAgainstQuestionnaire, getMissingItemsWithMeta in calculateSectionScore pokrij običajne primere, prazne zbirke, robne vrednosti, neveljavne vhode in TypeError za neveljavne obvezne strukture. Pričakovane rezultate določi iz opisane pogodbe in konkretnih primerov, ne s ponovnim klicanjem testirane kode. Nova imena naj sledijo obliki funkcija - pogoj - pričakovani rezultat. Mockov ne uporabljaj: funkcije nimajo baze, omrežja, ure ali drugih zunanjih odvisnosti. Pri getMissingItemsWithMeta uporabi resnični validator, saj je poceni deterministična sodelujoča funkcija. Preverjaj javne rezultate, ne notranjih zank. Produkcijske kode med pisanjem testov ne spreminjaj. Izvedi dve ločeni semantični mutaciji na enoto, shrani rezultate ter preveri nespremenjeno kodo po koncu. Dodaj coverage artifact in obvezno testno opravilo pred gradnjama.
-
-Predhodni testi so bili prav tako pripravljeni s pomočjo Codex pri prvi nalogi. Za drugo nalogo je dodanih devet primerov. Agent je preveril asercije, izvedel teste in mutacije. To ni neodvisen pregled človeka: ekipa mora pred oddajo pregledati specifikacijo in rezultate ter navesti svojo dejansko vlogo pri preverjanju kakovosti.
-
-## Kakovost testov: dejansko najdena vrzel in popravek
-
-Obstoječi test za zaokroževanje je preverjal 1/3 = 33 %. Math.round in Math.floor za ta vhod vrneta enak rezultat. Njegovo ime je zato obljubljalo več, kot je dokazoval. Na izolirani kopiji je sprememba round v floor preživela vseh šest starih testov validatorja: izhodna koda 0. Dokaz: [quality-before.tap](evidence/zk2/quality-before.tap).
-
-Dodani test preverja 2/3 = 67 %, zato isto napako zazna. Ločen test za numeric 0 omogoča tudi bolj natančno diagnozo kot zgolj skupen test vseh tipov. Dodani so še več kategorij, prazni/povsem pokriti podatki, podvojene reference, manjkajoči in neveljavni odgovori ter preverjanje izjem. Nekaj mejnih primerov je tabelarično združenih, ker preverjajo isto pravilo; to niso podvojeni testi brez dodatne vrednosti.
-
-V pregledanih testih nismo našli testa brez asercije. Pričakovani objekti in števila so zapisani neposredno; testi ne posnemajo zank implementacije in ne preverjajo klicev notranjih funkcij. Štirih starih testov utils.js nismo predstavljali kot nove teste druge naloge. Prvotnih šest imen v validator.test.js ostaja zaradi sledljivosti; devet novih sledi zgornjemu vzorcu poimenovanja.
-
-## Šest namernih napak in rezultati
-
-Skripta scripts/mutations.mjs za vsak poskus vstavi eno napako v kopijo dejanske enote v začasni mapi in zažene resnične teste. Originalna datoteka v projektu ni prepisana. Pred mutacijami preveri osnovni nabor in po njih znova izvede obnovljeno kopijo. Vsaka mutacija mora povzročiti vsaj en imenovan neuspešen test, ne samo zagonske napake. Če mutacija preživi ali testov ni mogoče pravilno izvesti, skripta vrne napako.
-
-| ID | Enota in namerna sprememba | Test, ki jo zazna | Rezultat |
-|---|---|---|---|
-| V1 | validateRulesAgainstQuestionnaire: obrnjeno preverjanje obstoja reference | validation distinguishes missing questions and orphaned rule references | Zaznana |
-| V2 | validateRulesAgainstQuestionnaire: izpuščene reference iz priporočil | validation distinguishes missing questions and orphaned rule references | Zaznana |
-| M1 | getMissingItemsWithMeta: vrne uporabljena namesto manjkajočih vprašanj | missing questions retain their metadata and exclude referenced questions | Zaznana |
-| M2 | getMissingItemsWithMeta: napačen categoryTitle | getMissingItemsWithMeta - several categories - preserves each question metadata | Zaznana |
-| S1 | calculateSectionScore: Math.floor namesto Math.round | calculateSectionScore - two out of three positive answers - rounds to 67 | Zaznana |
-| S2 | calculateSectionScore: numeric 0 napačno zavrnjen | calculateSectionScore - zero numeric answer - counts as valid | Zaznana |
-
-Vseh 6/6 izbranih mutacij je zaznanih, vsaka vrne izhodno kodo 1. Osnovni in obnovljeni nabor validatorja: 15/15 uspešnih. Celoten nabor: 19/19 uspešnih. Rezultat 6/6 velja za teh šest ročno izbranih mutacij; to ni splošna ocena mutacij celotnega programa. Podrobnosti, točne zamenjave in vsi neuspešni testi: [mutations.json](evidence/zk2/mutations.json), dnevniki [V1](evidence/zk2/V1.tap), [V2](evidence/zk2/V2.tap), [M1](evidence/zk2/M1.tap), [M2](evidence/zk2/M2.tap), [S1](evidence/zk2/S1.tap), [S2](evidence/zk2/S2.tap).
-
-## Pokritost in preverjanje ustavitve
-
-Lokalno uporabljeno okolje: Node.js 20.19.6 na Windows. Vgrajeni Node test runner in V8 coverage ne potrebujeta npm namestitve. Pokritost je izmerjena z --experimental-test-coverage in reporterjema TAP ter LCOV.
-
-| Datoteka | Vrstice | Veje | Funkcije |
-|---|---:|---:|---:|
-| src/utils/validator.js | 100 % | 100 % | 100 % |
-| src/utils.js | 8,47 % | 100 %* | 8,33 % |
-
-*Številka za veje utils.js je izpis V8 za evidentirane veje, ne dokaz testiranosti neizvedenih funkcij. Veliko funkcij in vrstic utils.js sploh ni izvedenih. Skupna izpisana pokritost vključuje tudi testne datoteke in ni odstotek pokritosti celotne aplikacije. Backend in React komponente niso zajeti. 100 % validatorja ne dokazuje pravilnosti vseh vhodov ali celotne poslovne logike.
-
-Dokazi lokalnega uspešnega izvajanja: [coverage.tap](evidence/zk2/coverage.tap) in [lcov.info](evidence/zk2/lcov.info). Lokalni izvoz se po vsakem zagonu ustvari še v coverage/; ta mapa je ignorirana v Git. Dokazila v evidence/zk2 so namensko del oddaje.
-
-Dodatno je bil coverage ukaz izveden na kopiji z napako zaokroževanja. Vrnil je izhodno kodo 1 in vseeno ustvaril LCOV poročilo. Dokaza: [failure-gate.json](evidence/zk2/failure-gate.json) in [failure-gate.tap](evidence/zk2/failure-gate.tap). To potrjuje prenos neuspeha testov skozi skripto; oddaljeno izvajanje GitHub Actions še ni bilo izvedeno.
-
-## CI in uporaba
-
-V .github/workflows/ci.yml je novo opravilo unit-tests. Izvede pokritost in šest mutacij, nato z always() naloži coverage/ ter evidence/zk2/ kot artifact unit-test-results. Obe gradnji imata needs: unit-tests, zato neuspešen test ali preživela mutacija prepreči njuno izvajanje. Upload poročila se sme izvesti tudi ob neuspehu; gradnji se ne smeta. continue-on-error ni uporabljen. Za teste ni potreben npm ci, ker uporabljajo samo standardno knjižnico Node; frontend ga pred svojo gradnjo še vedno izvede.
-
-Lokalni ukazi:
-
-~~~sh
+```sh
 npm test
 npm run test:coverage
-npm run test:mutations
-~~~
+npm run test:watch
+```
 
-Za oddajo objavite spremembe v repozitorij in preverite nov GitHub Actions zagon. V njegovih rezultatih prenesite artifact unit-test-results in preverite LCOV ter TAP dnevnike. Oddajte povezavo do tega dokumenta, kode testov in konkretnega CI izvajanja. Spremembe v tej seji niso objavljene, zato ne trdimo, da oddaljeni cevovod že uspešno deluje.
+Posamezna enota ali scenarij:
 
-## Seznam sprememb za drugo nalogo
+```sh
+node --test tests/unit/checkCriterion.test.js
+node --test --test-name-pattern="should round" tests/unit/evaluateAssessment.test.js
+```
 
-- test/validator.test.js: devet dodatnih primerov; skupaj petnajst za validator in štirje obstoječi za utils.js.
-- scripts/coverage.mjs: izvajanje testov, TAP/LCOV poročili in ohranitev neuspešne izhodne kode.
-- scripts/mutations.mjs: šest ponovljivih ločenih mutacij na izoliranih kopijah in obnovitveni preizkus.
-- package.json: nova ukaza test:coverage in test:mutations; brez novih odvisnosti.
-- .github/workflows/ci.yml: obvezno testno opravilo pred obema gradnjama in nalaganje artifacta tudi ob neuspehu.
-- .gitignore: ignoriranje ustvarjene coverage/ mape.
-- evidence/zk2/: dejanski dnevniki, poročilo mutacij, LCOV in dokaz izhodne kode neuspešnih testov.
-- README_ZK_2.md: izbor enot, pogodbe, AI specifikacija, pregled kakovosti, rezultati in navodila za oddajo.
-- README.md: povezava na ta dokument.
+`npm ci` je potreben za razvoj in gradnjo frontenda, za te teste pa ne. Lokalni poskus namestitve projektnih odvisnosti brez omrežja ni uspel, ker paket `tapable` ni v predpomnilniku. Gradnje frontenda zato v tem okolju ni bilo mogoče potrditi.
 
-Ta dokument dopolnjuje README_ZK.md iz prve naloge; njegovi zgodovinski rezultati desetih testov niso posodobljeni za nazaj. Za drugo nalogo veljajo rezultati tega dokumenta.
+## Odstranjeno staro stanje
+
+- `test/utils.test.js` in `test/validator.test.js`.
+- `scripts/coverage.mjs` in `scripts/mutations.mjs`.
+- Stara lokalna `coverage/lcov.info` in `coverage/test-results.tap`.
+- Stari npm ukaz `test:mutations` in pripadajoči CI korak.
+- Stari opis testiranja v tem dokumentu je nadomeščen s trenutno specifikacijo.
+
+Datoteke v `evidence/zk2/` so bile izbrisane že pred začetkom tega posega; nismo jih obnavljali ali predstavljali kot rezultate novih testov. `README_ZK.md` ostaja zgodovinski zapis prve naloge.
+
+## Izbrane enote in pogodbe
+
+Funkcije so javno dostopne prek `src/utils.js`, implementacija izračunov je v `src/utils/assessment.js`. Premik ohranja obstoječe uvoze aplikacije. Dodatna enota je v `src/utils/clipboard.js`.
+
+| Enota | Zakaj ni trivialna | Vhod, izhod in meje |
+|---|---|---|
+| `checkCriterion` | Več operatorjev, normalizacija logičnih odgovorov, članstvo in številske meje. | Vhod: objekt odgovorov in kriterij z nepraznim nizom `item_id`, neobveznim `operator` ter `value`. Izhod: boolean. Privzeti operator je `=`. `true` ustreza `true`/`DA`; `false` ustreza `false`/`NE`/manjkajočemu odgovoru/null/praznemu nizu. Druge enakosti so stroge. `includes` išče cel element polja ali z vejico ločen niz, ne podniza. Številske primerjave sprejmejo končna števila in neprazne številske nize; 0 in negativna števila sta veljavna. Boolean, polja, objekti, NaN in neskončnost niso števila. Neznan operator ali neveljaven številski operand vrne false. Napačna struktura argumentov ali ID sproži TypeError. |
+| `evaluateAssessment` | Rekurzivni izračun odstotka, dve obliki pravil, izbira stopnje in priporočila. | Vhod: objekt odgovorov, kategorije in pravila. Izhod: `{ score, level, levelName, missing }`. Odstotek je zaokrožen na celo število 0–100; priporočil je največ 15 skupaj z uvodno vrstico. Pri kriterijih mora stopnja izpolniti vse pogoje, izbere pa se najvišja izpolnjena stopnja neodvisno od vrstnega reda in izpolnjenosti nižjih stopenj. Podvprašanja štejejo le ob pritrdilnem staršu. |
+| `getMaxScore` | Rekurzivno prehaja več kategorij in poljubno gnezdenje, ločuje pet tipov vprašanj. | Za vsak `yes_no_na`, `checkbox`, `text`, `numeric` in `multiselect` prišteje 10. Neodvisno od odgovorov prešteje tudi podvprašanja. Nepodprti tipi ne prispevajo točk, njihove otroke pa preišče. Brez točkovanih vprašanj vrne 100; rezultat je lahko večji od 100. null/undefined kategorije ali items pomenijo prazno zbirko; napačne strukture sprožijo TypeError. |
+| `copyToClipboard` | Asinhroni primarni API, rezervni DOM postopek, napake in čiščenje. | Sprejme niz, tudi prazen. Vrne Promise<boolean>. V varnem kontekstu najprej poskusi Clipboard API. Ob zavrnitvi, odsotnosti API-ja ali nevarnem kontekstu uporabi rezervni postopek. Ob napaki vrne false in odstrani začasni element. Nenizovni vhodi vrnejo false brez klicev zunanjih API-jev. |
+
+### Podrobnosti ocenjevanja
+
+- Pri pravilih s kriteriji šteje vsako aktivno vprašanje navedenih petih tipov 10 možnih točk. Checkbox/yes_no_na sta izpolnjena le ob true/DA, besedilo ob nepraznem nizu po trim, numeric ob končni številski vrednosti, multiselect ob nepraznem polju. `NA` v tem načinu ostaja neizpolnjeno vprašanje v imenovalcu.
+- Pri starem načinu s `minScore` štejejo samo neposredna vprašanja yes_no_na, checkbox in text; `NA` pri yes_no_na se izloči iz imenovalca. To namenoma ohranja obstoječi ločeni način, ne uvaja nove poslovne definicije starega vprašalnika. Izbere se najvišji doseženi prag, ne glede na vrstni red pravil.
+- Prazni/null/undefined kategorije in pravila so prazne zbirke. S praznimi odgovori vrnejo 0 točk, stopnjo 1, ime `Začetna` in prazen seznam priporočil. Odgovori morajo biti objekt; napačne strukture, neveljavni elementi in kriteriji sprožijo TypeError, tudi v neaktivnih podvprašanjih.
+- Prazna ali manjkajoča zbirka kriterijev pomeni brezpogojno stopnjo v kriterijskem načinu. Če nobena stopnja ne ustreza, ostane stopnja 1 oziroma najnižja konfigurirana stopnja, če stopnje 1 ni.
+- Priporočila vsebujejo le neizpolnjene pogoje naslednje številčne stopnje. Uporabijo namensko besedilo priporočila ali opis pogoja. Vhodi se ne spreminjajo.
+- Validacija preverja strukture, ki jih enote potrebujejo; ne nadomešča popolne validacije sheme vprašalnika (npr. unikatnosti ID-jev ali poslovnih omejitev posameznih numeričnih vprašanj).
+
+## Testi in izolacija
+
+| Datoteka | Vsebina |
+|---|---|
+| `tests/unit/checkCriterion.test.js` | Enakost, članstvo, vse štiri numerične primerjave pod/na/nad mejo, napačni tipi in izjeme. |
+| `tests/unit/getMaxScore.test.js` | Vsi podprti tipi, gnezdenje, več kategorij, prazen vhod, napačne strukture, vrstni red in nespremenjenost podatkov. |
+| `tests/unit/evaluateAssessment.test.js` | Oba načina, vsi tipi odgovorov, dva negativna odgovora, starši/otroci/vnuki, pragi in zaokroževanje, priporočila, omejitev 15, nespremenjenost vhodov, neveljavni vhodi. |
+| `tests/unit/clipboard.test.js` | Mocki navigator/window/document; uspeh, prazen niz, zavrnitev Promise, HTTP, odsoten API, neuspeh in izjema rezervnega postopka, čiščenje DOM. |
+
+Izračuni so deterministični in brez zunanjih odvisnosti, zato jih ne mockamo. Brskalniške odvisnosti odložišča nadomestimo v celoti in prvotne globalne objekte obnovimo po vsakem testu. Testi ne dostopajo do uporabnikovega odložišča, baze, omrežja ali datotečnega sistema. Skripta za poročila seveda zapisuje rezultate na disk.
+
+`tests/helpers/cases.js` registrira vsako vrstico podatkov kot ločen native test; ne izvaja lastnih trditev. `assertFields.js` s strogo enakostjo primerja izbrana javna polja rezultata. Pričakovane vrednosti niso izračunane z enoto, ki jo testiramo.
+
+## Popravki produkcijske kode
+
+Testi preverjajo pogodbo, ne ohranjajo napačnega obnašanja. Popravili smo:
+
+- Pretvarjanje boolean, polj, praznih presledkov in neskončnosti v veljavne številske odgovore.
+- Štetje `true` kot veljavnega odgovora za besedilo ali multiselect.
+- Sesutje starega ocenjevanja ob nenizovnem besedilnem odgovoru.
+- Odvisnost izbire starega praga od vrstnega reda pravil.
+- Nenadzorovane napake pri neveljavnih strukturah in obravnavo praznih pravil.
+- Začasni DOM element, ki je ob izjemi ostal pripet, ter sprejemanje nenizovnih vhodov za odložišče.
+
+## Pokritost in CI/CD
+
+`npm run test:coverage` uporablja native V8/LCOV reporter. `scripts/test-coverage.mjs` izbere zapisa za oba ciljna modula, pripravi HTML z označenimi vrsticami, JSON in Markdown ter preveri pragove za vsak modul: **90 % vrstic, 85 % vej in 90 % funkcij**. Napaka testa ali nedosežen prag vrneta exit code 1; manjkajoče metrike povzročijo napako. Poročila nastanejo tudi ob navadnem neuspešnem testu.
+
+Rezultati so v:
+
+- `coverage/index.html` – pregled in povezavi do izvorne kode z označenimi vrsticami;
+- `coverage/lcov.info` – standardni strojno berljiv format;
+- `coverage/coverage-summary.json` in `coverage/summary.md` – metrike in pragovi;
+- `coverage/test-results.txt` – rezultat zagona.
+
+To je pokritost izbranih modulov, **ne celotne aplikacije**. React UI, API, preostale pomožne funkcije, validator in C++ backend niso vključeni v pragove. Native izpis lahko vsebuje tudi uvožene datoteke in teste; omejen povzetek na koncu ter artefakti jasno določajo dejanski obseg. V8-jeva branch metrika ni dokaz, da so preverjene vse možne kombinacije pogojev; zato posebej testiramo mejne vrednosti.
+
+Workflow `.github/workflows/ci.yml` teče ob push, pull request in ročno. Opravilo `unit-tests` izvede teste s pokritostjo. Opravili `frontend` in `backend` imata `needs: unit-tests`, zato ob neuspehu ne stečeta. Diagnostični prenos poročila z `if: always()` ostane dovoljen tudi ob neuspehu in ga ne spremeni v uspeh.
+
+Na GitHubu: **Actions → CI Pipeline → izbrani zagon → Artifacts → unit-test-coverage**. Po prenosu razširi ZIP in odpri `index.html`. Povzetek je tudi v zavihku Summary in konzoli. Artefakt se hrani 14 dni. Dejanski oddaljeni zagon bo izveden ob pushu; spremembe niso bile samodejno pushane.
+
+## Pregled kakovosti in preverjanje
+
+- Lokalni osnovni zagon: **179 testov, 179 uspešnih, brez preskočenih**.
+- Pregledane so konkretne pričakovane vrednosti, smiselnost trditev, neodvisnost testov, obnova mockov in razlikovanje mejnih scenarijev. Tabelarični primeri imajo različne vhodne razrede; niso kopije istega preverjanja.
+- Tri začasne semantične napake so morale povzročiti neuspeh testov: `>=` spremenjen v `>`, `Math.round` v `Math.floor`, utež 10 v 5. Izvorna koda se po preverjanju obnovi.
+- Začasni namerno neuspešen test preveri, da celoten ukaz za pokritost vrne exit code 1 in vseeno ustvari poročilo. Test se nato odstrani in izvede se končni zeleni zagon.
+- Lokalni izmerjeni vrednosti: assessment 99,24 % vrstic / 99,38 % vej / 100 % funkcij; clipboard 100 % vrstic / 92,86 % vej / 100 % funkcij. Metrike se lahko med različicami Node/V8 razlikujejo; veljavni so rezultati konkretnega zagona.
+- Gradnja frontenda in oddaljeni GitHub Actions zagon v tem okolju nista potrjena. Testi enot so preverjeni lokalno in ne potrebujejo frontend odvisnosti.
