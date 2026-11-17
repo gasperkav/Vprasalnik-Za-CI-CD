@@ -4,6 +4,8 @@ Datum: 16. 11. 2026.
 
 ## Ogrodje in zagon
 
+Popravek CI (17. 11. 2026): zagon 43948533162 je na Node.js 22.23.4 padel z `Cannot find module '.../tests/unit'`, ker je zagonski ukaz podal mapo namesto testnih datotek. `scripts/unit-test-files.mjs` zdaj rekurzivno poišče in uredi datoteke `.test.js`; tako običajni zagon kot zagon s pokritostjo Nodeu podata isti izrecen seznam. Razširjanje vzorcev v lupini ni potrebno. Popravek je lokalno preverjen z Node.js 20.19.6; potrditev na Node.js 22 zahteva nov CI zagon po pushu.
+
 Uporabljamo vgrajeni **Node.js test runner (`node:test`)**, stroge trditve `node:assert/strict`, native `mock.fn` in V8-merjenje pokritosti. Za teste ni potrebna namestitev paketov, baza, Docker, omrežje ali brskalnik. Lokalno preverjeno z Node.js 20.19.6; CI uporablja Node.js 22. Priporočen je Node.js 22.
 
 Vitest je bil prvotna izbira, vendar je okolje zavrnilo dostop do registra npm (`EACCES`), lokalni predpomnilnik pa ga nima. Zato nova postavitev uporablja dejansko razpoložljivo ogrodje. Paketov Vitest ni v `package.json`; lockfile ostaja veljaven. To niso predelani stari testi: vsi testni scenariji so napisani na novo.

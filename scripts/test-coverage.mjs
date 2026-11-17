@@ -2,6 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { unitTestFiles } from './unit-test-files.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = path.join(root, 'coverage');
@@ -12,7 +13,7 @@ const run = spawnSync(process.execPath, [
   '--test', '--experimental-test-coverage',
   '--test-reporter=spec', '--test-reporter-destination=stdout',
   '--test-reporter=lcov', `--test-reporter-destination=${rawReport}`,
-  'tests/unit',
+  ...unitTestFiles(),
 ], { cwd: root, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
 process.stdout.write(run.stdout || '');
 process.stderr.write(run.stderr || '');

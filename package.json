@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test tests/unit",
-    "test:watch": "node --test --watch tests/unit",
+    "test": "node scripts/test-unit.mjs",
+    "test:watch": "node scripts/test-unit.mjs --watch",
     "test:coverage": "node scripts/test-coverage.mjs"
   },
   "repository": {
