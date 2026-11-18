@@ -1,0 +1,45 @@
+{
+  "runId": "2026-11-18T09-08-53-355Z-d54933",
+  "startedUtc": "2026-11-18T09:08:53.469Z",
+  "mode": "smoke",
+  "target": "http://127.0.0.1:3002",
+  "planSha256": "1d231cc271ca2d2d3030059caa8db668d095ac91c8b0febc364970d552ba27e2",
+  "sourceSha256": {
+    "tests/performance/plan.json": "1d231cc271ca2d2d3030059caa8db668d095ac91c8b0febc364970d552ba27e2",
+    "tests/performance/run.mjs": "2bfdacd3a90734c63cba45b7db9bb36e23d4c4371747d552d4423b4c8f2efdb1",
+    "tests/performance/SPECIFIKACIJA.md": "6bdd7c1096d054202db8e853f1db084dda2aeb4dfae634c5a90f1c93b01945e0",
+    "src/utils/assessment.js": "6ee7312eeedb0f6ab413a3d102d82ca20a879d7632ba4bc2e90cb0e87c59402e",
+    "backend/src/main.cpp": "5dce91c835a6b00134e32f4c462a690237ab409ab860fca08c7e1a803349b04d",
+    "backend/include/cicdq/db.hpp": "35dec4ac46e925aa4c30c22b7740cf827e313093f4eb3b96bbecd9f770110f3a",
+    "backend/include/cicdq/store.hpp": "dfa4683057596f68b42b6de3dffb6bc45db48402fb271890b71378b5233d7bf1",
+    "backend/include/cicdq/routes/pipelines.hpp": "6ff38204a201bf78b522a7c32faef3781f4e4122070d36bea947da1ef28e3c56",
+    "Dockerfile.backend": "7735f954e5e4b0d5287bf9664b322c9d3be4427bb24e69d049d9db72ed3f766d"
+  },
+  "node": "v20.19.6",
+  "platform": "win32",
+  "os": "Windows 10 Home",
+  "release": "10.0.19045",
+  "cpu": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+  "logicalCpus": 8,
+  "hostTotalBytes": 8451649536,
+  "hostFreeBytes": 892555264,
+  "generatorPid": 21024,
+  "git": {
+    "available": true,
+    "output": "a0bdec393448fae95cd43e2b0f26020e2fb31241"
+  },
+  "gitStatus": {
+    "available": true,
+    "output": "M .gitignore\n M README.md\n M docs/FUNKCIONALNO_TESTIRANJE_ISO29119-3.md\n M package.json\n?? README_ZK_4.md\n?? tests/performance/"
+  },
+  "docker": {
+    "available": true,
+    "output": "{\"Client\":{\"Version\":\"29.9.3\",\"ApiVersion\":\"1.56\",\"DefaultAPIVersion\":\"1.56\",\"GitCommit\":\"5457199\",\"GoVersion\":\"go1.26.10\",\"Os\":\"windows\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Nov  3 21:46:10 2026\",\"Context\":\"desktop-linux\"},\"Server\":{\"Platform\":{\"Name\":\"Docker Desktop 4.99.0 (245822)\"},\"Version\":\"29.9.3\",\"ApiVersion\":\"1.56\",\"MinAPIVersion\":\"1.40\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"Components\":[{\"Name\":\"Engine\",\"Version\":\"29.9.3\",\"Details\":{\"ApiVersion\":\"1.56\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Nov  3 21:41:42 2026\",\"Experimental\":\"false\",\"GitCommit\":\"70efc0e\",\"GoVersion\":\"go1.26.10\",\"KernelVersion\":\"6.18.58.1-microsoft-standard-WSL2\",\"MinAPIVersion\":\"1.40\",\"Module\":\"github.com/moby/moby/v2\",\"ModuleVersion\":\"v2.0.0+unknown\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.4.2\",\"Details\":{\"GitCommit\":\"b7a25261e029d68978bbf290df0a62fc819b3c51\"}},{\"Name\":\"runc\",\"Version\":\"1.5.2\",\"Details\":{\"GitCommit\":\"v1.5.2-0-g29dd3dc2\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"GitCommit\":\"70efc0e\",\"GoVersion\":\"go1.26.10\",\"KernelVersion\":\"6.18.58.1-microsoft-standard-WSL2\",\"BuildTime\":\"2026-11-03T21:41:42.000000000+00:00\"}}"
+  },
+  "targetTelemetry": "N/A: runner samples generator and host only. No target CPU/RAM/restart monitor attached.",
+  "targetBuildIdentity": "Existing local service; source hash is not proof of the running image build.",
+  "cppSourceStandard": "C++17",
+  "cppCompilerRuntimeVersion": "N/A (Docker access unavailable)",
+  "postgresRuntimeVersion": "N/A (Docker access unavailable)",
+  "postgresComposeImage": "postgres:15-alpine"
+}

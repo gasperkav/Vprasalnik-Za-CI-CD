@@ -9,7 +9,11 @@
     "preview": "vite preview",
     "test": "node scripts/test-unit.mjs",
     "test:watch": "node scripts/test-unit.mjs --watch",
-    "test:coverage": "node scripts/test-coverage.mjs"
+    "test:coverage": "node scripts/test-coverage.mjs",
+    "test:system": "node tests/performance/run.mjs all",
+    "test:system:smoke": "node tests/performance/run.mjs smoke",
+    "test:system:load": "node tests/performance/run.mjs load",
+    "test:system:stress": "node tests/performance/run.mjs stress"
   },
   "repository": {
     "type": "git",

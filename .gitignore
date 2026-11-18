@@ -51,3 +51,8 @@ Thumbs.db
 .claude
 # Generated local coverage (CI uploads it as an artifact)
 coverage/
+
+# Local performance-test account and concurrent-run lock (never commit credentials)
+tests/performance/.account.local
+tests/performance/.account-*.local
+tests/performance/.runner.lock

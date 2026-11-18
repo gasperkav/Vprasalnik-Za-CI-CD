@@ -1,0 +1,172 @@
+{
+  "test": "stress",
+  "name": "stress-80",
+  "vus": 80,
+  "thinkMs": 0,
+  "plannedSeconds": 20,
+  "actualSeconds": 21.596,
+  "drainSeconds": 1.596,
+  "requests": 5202,
+  "errors": 0,
+  "errorPercent": 0,
+  "integrityFailures": 0,
+  "timeouts": 0,
+  "reqPerSecond": 240.883,
+  "successfulReqPerSecond": 240.883,
+  "latencyMs": {
+    "count": 5202,
+    "mean": 327.214,
+    "p50": 43.854,
+    "p95": 1733.969,
+    "p99": 2431.687,
+    "max": 2616.174
+  },
+  "statuses": {
+    "200": 3468,
+    "201": 867,
+    "204": 867
+  },
+  "journeyLatencyMs": {
+    "count": 867,
+    "mean": 1964.258,
+    "p50": 1579.773,
+    "p95": 3632.368,
+    "p99": 4651.321,
+    "max": 5038.659
+  },
+  "journeys": 867,
+  "journeyErrors": 0,
+  "journeyErrorPercent": 0,
+  "healthSamples": 17,
+  "healthFailures": 0,
+  "generator": {
+    "cpuPercentOfOneCore": 29.015,
+    "eventLoopP99Ms": 20.742,
+    "maxRssBytes": 94912512,
+    "minHostFreeBytes": 554655744
+  },
+  "endpoints": {
+    "GET /api/questionnaire/versions/1.0": {
+      "requests": 867,
+      "errors": 0,
+      "errorPercent": 0,
+      "integrityFailures": 0,
+      "timeouts": 0,
+      "reqPerSecond": 40.147,
+      "successfulReqPerSecond": 40.147,
+      "latencyMs": {
+        "count": 867,
+        "mean": 336.242,
+        "p50": 30.855,
+        "p95": 1462.203,
+        "p99": 1885.376,
+        "max": 2173.556
+      },
+      "statuses": {
+        "200": 867
+      }
+    },
+    "GET /api/rules/versions/1.0": {
+      "requests": 867,
+      "errors": 0,
+      "errorPercent": 0,
+      "integrityFailures": 0,
+      "timeouts": 0,
+      "reqPerSecond": 40.147,
+      "successfulReqPerSecond": 40.147,
+      "latencyMs": {
+        "count": 867,
+        "mean": 258.068,
+        "p50": 4.462,
+        "p95": 1418.204,
+        "p99": 1481.072,
+        "max": 1498.406
+      },
+      "statuses": {
+        "200": 867
+      }
+    },
+    "GET /api/pipelines": {
+      "requests": 867,
+      "errors": 0,
+      "errorPercent": 0,
+      "integrityFailures": 0,
+      "timeouts": 0,
+      "reqPerSecond": 40.147,
+      "successfulReqPerSecond": 40.147,
+      "latencyMs": {
+        "count": 867,
+        "mean": 286.134,
+        "p50": 83.516,
+        "p95": 1353.708,
+        "p99": 1481.203,
+        "max": 1513.603
+      },
+      "statuses": {
+        "200": 867
+      }
+    },
+    "POST /api/pipelines": {
+      "requests": 867,
+      "errors": 0,
+      "errorPercent": 0,
+      "integrityFailures": 0,
+      "timeouts": 0,
+      "reqPerSecond": 40.147,
+      "successfulReqPerSecond": 40.147,
+      "latencyMs": {
+        "count": 867,
+        "mean": 255.073,
+        "p50": 72.699,
+        "p95": 1105.762,
+        "p99": 1305.232,
+        "max": 1562.486
+      },
+      "statuses": {
+        "201": 867
+      }
+    },
+    "GET /api/pipelines/:id": {
+      "requests": 867,
+      "errors": 0,
+      "errorPercent": 0,
+      "integrityFailures": 0,
+      "timeouts": 0,
+      "reqPerSecond": 40.147,
+      "successfulReqPerSecond": 40.147,
+      "latencyMs": {
+        "count": 867,
+        "mean": 371.081,
+        "p50": 45.551,
+        "p95": 2180.565,
+        "p99": 2439.948,
+        "max": 2549.398
+      },
+      "statuses": {
+        "200": 867
+      }
+    },
+    "DELETE /api/pipelines/:id": {
+      "requests": 867,
+      "errors": 0,
+      "errorPercent": 0,
+      "integrityFailures": 0,
+      "timeouts": 0,
+      "reqPerSecond": 40.147,
+      "successfulReqPerSecond": 40.147,
+      "latencyMs": {
+        "count": 867,
+        "mean": 456.685,
+        "p50": 7.766,
+        "p95": 2428.745,
+        "p99": 2534.668,
+        "max": 2616.174
+      },
+      "statuses": {
+        "204": 867
+      }
+    }
+  },
+  "sloMet": false,
+  "generatorValid": true
+}

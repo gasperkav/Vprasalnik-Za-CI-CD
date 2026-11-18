@@ -1,0 +1,694 @@
+{
+  "questionnaire": {
+    "description": "Vprašalnik za popis in oceno zrelosti CI/CD cevovodov. Na podlagi izpolnjenih odgovorov sistem določi nivo zrelosti cevovoda in prikaže, kaj je potrebno za dosego višjega nivoja.",
+    "sections": [
+      {
+        "description": "Avtomatiziran proces gradnje (kompilacija, pakiranje) aplikacije iz izvorne kode.",
+        "id": "build",
+        "items": [
+          {
+            "description": "Cevovod vključuje korak avtomatiziranega build-a.",
+            "id": "build_present",
+            "items": [
+              {
+                "description": "Build je možno sprožiti ročno (npr. s klikom na gumb).",
+                "id": "build_manual_trigger",
+                "items": [],
+                "label": "Ročni prožilec (manual trigger)",
+                "type": "checkbox"
+              },
+              {
+                "description": "Dogodki, ki samodejno sprožijo build korak.",
+                "id": "build_other_triggers",
+                "items": [],
+                "label": "Avtomatski prožilci",
+                "options": [
+                  {
+                    "label": "Push",
+                    "value": "PUSH"
+                  },
+                  {
+                    "label": "Pull Request",
+                    "value": "PULLRQ"
+                  },
+                  {
+                    "label": "Scheduled (urnik)",
+                    "value": "SCHEDULED"
+                  },
+                  {
+                    "label": "API klic",
+                    "value": "API"
+                  },
+                  {
+                    "label": "Zaključek drugega cevovoda",
+                    "value": "PIPELINE"
+                  },
+                  {
+                    "label": "Drugo",
+                    "value": "OTHER"
+                  }
+                ],
+                "type": "multiselect"
+              },
+              {
+                "description": "Build se izvaja na lastnem ali namenskem strežniku, ne na privzetem runnerju ponudnika (npr. GitHub Actions runner).",
+                "id": "build_dedicated_server",
+                "items": [],
+                "label": "Uporaba namenskega build strežnika (izven GitHub runner)",
+                "type": "checkbox"
+              },
+              {
+                "description": "Build proces zapisuje podrobne loge, ki omogočajo diagnostiko napak.",
+                "id": "build_explicit_logging",
+                "items": [],
+                "label": "Eksplicitno beleženje build korakov (logging)",
+                "type": "checkbox"
+              },
+              {
+                "description": "Rezultati build-a (JAR, Docker image, ZIP …) se shranijo in so dostopni po zaključku cevovoda.",
+                "id": "build_artifacts_stored",
+                "items": [
+                  {
+                    "description": "Vsak artefakt dobi samodejno določeno verzijsko oznako (npr. semantična verzija, git tag, build number).",
+                    "id": "build_artifact_versioning",
+                    "items": [],
+                    "label": "Avtomatsko verzioniranje artefaktov",
+                    "type": "checkbox"
+                  }
+                ],
+                "label": "Build artefakti se hranijo",
+                "type": "checkbox"
+              },
+              {
+                "description": "Ekipa prejme obvestilo (e-pošta, Slack, Teams …) ob zaključku build-a.",
+                "id": "build_notification",
+                "items": [],
+                "label": "Obvestilo ob uspehu / neuspehu build-a",
+                "type": "checkbox"
+              },
+              {
+                "description": "Opišite morebitne dodatne lastnosti build koraka, ki jih zgornji seznam ne pokriva.",
+                "id": "build_other",
+                "items": [],
+                "label": "Drugo",
+                "type": "text"
+              }
+            ],
+            "label": "Build korak je prisoten v cevovodu",
+            "type": "checkbox"
+          }
+        ],
+        "label": "Build",
+        "type": "checkbox"
+      },
+      {
+        "description": "Avtomatizirani testi posameznih enot kode (funkcij, razredov, modulov) brez zunanjih odvisnosti.",
+        "id": "unit_testing",
+        "items": [
+          {
+            "description": "Cevovod vključuje avtomatizirano izvajanje unit testov.",
+            "id": "unit_test_present",
+            "items": [
+              {
+                "description": "Unit teste je možno sprožiti ročno.",
+                "id": "unit_test_manual_trigger",
+                "items": [],
+                "label": "Ročni prožilec",
+                "type": "checkbox"
+              },
+              {
+                "description": "Dogodki, ki samodejno sprožijo unit teste.",
+                "id": "unit_test_triggers",
+                "items": [],
+                "label": "Avtomatski prožilci",
+                "options": [
+                  {
+                    "label": "Push",
+                    "value": "PUSH"
+                  },
+                  {
+                    "label": "Pull Request",
+                    "value": "PULLRQ"
+                  },
+                  {
+                    "label": "Scheduled (urnik)",
+                    "value": "SCHEDULED"
+                  },
+                  {
+                    "label": "API klic",
+                    "value": "API"
+                  },
+                  {
+                    "label": "Zaključek drugega cevovoda",
+                    "value": "PIPELINE"
+                  },
+                  {
+                    "label": "Drugo",
+                    "value": "OTHER"
+                  }
+                ],
+                "type": "multiselect"
+              },
+              {
+                "description": "Testi se izvajajo na namenskem strežniku.",
+                "id": "unit_test_dedicated_server",
+                "items": [],
+                "label": "Namenski testni strežnik (izven GitHub runner)",
+                "type": "checkbox"
+              },
+              {
+                "description": "Unit testi se izvedejo samo po uspešnem build koraku.",
+                "id": "unit_test_requires_build",
+                "items": [],
+                "label": "Zahteva predhodnji build",
+                "type": "checkbox"
+              },
+              {
+                "description": "Podrobni logi izvajanja testov so dostopni za diagnostiko.",
+                "id": "unit_test_logging",
+                "items": [],
+                "label": "Eksplicitno beleženje (logging)",
+                "type": "checkbox"
+              },
+              {
+                "description": "Cevovod samodejno ustvari poročilo z rezultati testov.",
+                "id": "unit_test_report",
+                "items": [],
+                "label": "Generiranje testnega poročila",
+                "type": "checkbox"
+              },
+              {
+                "description": "Rezultati in logi testov se shranjujejo za kasnejšo analizo.",
+                "id": "unit_test_artifacts_stored",
+                "items": [],
+                "label": "Testni artefakti se hranijo (logi, poročila)",
+                "type": "checkbox"
+              },
+              {
+                "description": "Ekipa prejme obvestilo ob rezultatu unit testov.",
+                "id": "unit_test_notification",
+                "items": [],
+                "label": "Obvestilo ob uspehu / neuspehu",
+                "type": "checkbox"
+              },
+              {
+                "description": "Če kateri koli unit test ne uspe, se celoten cevovod zaustavi in prepreči nadaljnjo izvedbo.",
+                "id": "unit_test_pipeline_fail",
+                "items": [],
+                "label": "Cevovod se ustavi ob neuspehu testov",
+                "type": "checkbox"
+              },
+              {
+                "description": "Ob neuspehu testov se samodejno ustvari napaka v sistemu za sledenje nalogam.",
+                "id": "unit_test_auto_issue",
+                "items": [],
+                "label": "Avtomatsko odpiranje napake (issue) ob neuspehu",
+                "type": "checkbox"
+              },
+              {
+                "description": "Cevovod meri in poroča odstotek kode, ki je pokrit z unit testi.",
+                "id": "unit_test_coverage_tracking",
+                "items": [
+                  {
+                    "description": "Trenutni odstotek pokritosti kode z unit testi.",
+                    "id": "unit_test_coverage_percent",
+                    "items": [],
+                    "label": "Pokritost kode s testi (%)",
+                    "type": "numeric"
+                  },
+                  {
+                    "description": "Definirano je minimalno zahtevano pokritost; cevovod ne uspe, če je pokritost nižja.",
+                    "id": "unit_test_coverage_gate",
+                    "items": [],
+                    "label": "Cevovod se ustavi, če pokritost pade pod prag",
+                    "type": "checkbox"
+                  }
+                ],
+                "label": "Merjenje pokritosti kode s testi (code coverage)",
+                "type": "checkbox"
+              },
+              {
+                "description": "Opišite morebitne dodatne lastnosti unit testing koraka, ki jih zgornji seznam ne pokriva.",
+                "id": "unit_testing_other",
+                "items": [],
+                "label": "Drugo",
+                "type": "text"
+              }
+            ],
+            "label": "Unit testing korak je prisoten v cevovodu",
+            "type": "checkbox"
+          }
+        ],
+        "label": "Unit Testing",
+        "type": "checkbox"
+      },
+      {
+        "description": "Avtomatizirana namestitev aplikacije v ciljno okolje.",
+        "id": "deploy",
+        "items": [
+          {
+            "description": "Cevovod vključuje avtomatiziran deploy.",
+            "id": "deploy_present",
+            "items": [
+              {
+                "description": "Deploy je možno sprožiti ročno.",
+                "id": "deploy_manual_trigger",
+                "items": [],
+                "label": "Ročni prožilec",
+                "type": "checkbox"
+              },
+              {
+                "description": "Dogodki, ki samodejno sprožijo deploy.",
+                "id": "deploy_triggers",
+                "items": [],
+                "label": "Avtomatski prožilci",
+                "options": [
+                  {
+                    "label": "Push",
+                    "value": "PUSH"
+                  },
+                  {
+                    "label": "Pull Request",
+                    "value": "PULLRQ"
+                  },
+                  {
+                    "label": "Scheduled (urnik)",
+                    "value": "SCHEDULED"
+                  },
+                  {
+                    "label": "API klic",
+                    "value": "API"
+                  },
+                  {
+                    "label": "Zaključek drugega cevovoda",
+                    "value": "PIPELINE"
+                  },
+                  {
+                    "label": "Drugo",
+                    "value": "OTHER"
+                  }
+                ],
+                "type": "multiselect"
+              },
+              {
+                "description": "Kateri koraki morajo biti zaključeni pred deploy-em.",
+                "id": "deploy_depends_on",
+                "items": [],
+                "label": "Odvisnosti (depends on)",
+                "options": [
+                  {
+                    "label": "Build",
+                    "value": "BUILD"
+                  },
+                  {
+                    "label": "Unit Testing",
+                    "value": "UNITTEST"
+                  },
+                  {
+                    "label": "Functional Testing",
+                    "value": "FUNCTEST"
+                  },
+                  {
+                    "label": "System Testing",
+                    "value": "SYSTEST"
+                  },
+                  {
+                    "label": "Analysis",
+                    "value": "ANALYSIS"
+                  },
+                  {
+                    "label": "Release",
+                    "value": "RELEASE"
+                  },
+                  {
+                    "label": "Deploy",
+                    "value": "DEPLOY"
+                  },
+                  {
+                    "label": "Drugo",
+                    "value": "OTHER"
+                  }
+                ],
+                "type": "multiselect"
+              },
+              {
+                "description": "Podrobni logi deploy procesa so dostopni.",
+                "id": "deploy_logging",
+                "items": [],
+                "label": "Eksplicitno beleženje (logging)",
+                "type": "checkbox"
+              },
+              {
+                "description": "Označite vsa okolja, v katera cevovod samodejno namesti aplikacijo.",
+                "id": "deploy_environments",
+                "items": [],
+                "label": "Okolja, v katera se izvaja deploy",
+                "options": [
+                  {
+                    "label": "Test",
+                    "value": "test"
+                  },
+                  {
+                    "label": "Staging",
+                    "value": "staging"
+                  },
+                  {
+                    "label": "Production / Produkcija",
+                    "value": "production"
+                  }
+                ],
+                "type": "multiselect"
+              },
+              {
+                "description": "Opišite morebitne dodatne lastnosti deploy koraka, ki jih zgornji seznam ne pokriva.",
+                "id": "deploy_other",
+                "items": [],
+                "label": "Drugo",
+                "type": "text"
+              }
+            ],
+            "label": "Deploy korak je prisoten v cevovodu",
+            "type": "checkbox"
+          }
+        ],
+        "label": "Deploy",
+        "type": "checkbox"
+      },
+      {
+        "description": "Elementi cevovodov, ki jih ni mogoče uvrstiti v nobeno od zgornjih kategorij.",
+        "id": "other",
+        "items": [
+          {
+            "description": "Zapišite elemente cevovoda, ki ste jih našli med pregledom, a jih niste mogli uvrstiti v nobeno od zgornjih kategorij.",
+            "id": "other_description",
+            "items": [],
+            "label": "Opis dodatnih elementov",
+            "type": "text"
+          }
+        ],
+        "label": "Drugo",
+        "type": "checkbox"
+      }
+    ],
+    "title": "CI/CD Pipeline Maturity Assessment",
+    "version": "1.0"
+  },
+  "rules": {
+    "description": "Pravila za izračun nivoja zrelosti CI/CD cevovoda. Sistem preveri pogoje od nivoja 5 navzdol in dodeli najvišji nivo, pri katerem so izpolnjeni vsi pogoji.",
+    "levels": [
+      {
+        "criteria": [
+          {
+            "item_id": "build_present",
+            "value": true
+          },
+          {
+            "item_id": "build_other_triggers",
+            "operator": "includes",
+            "value": "PUSH"
+          },
+          {
+            "item_id": "build_other_triggers",
+            "operator": "includes",
+            "value": "PULLRQ"
+          },
+          {
+            "item_id": "build_artifacts_stored",
+            "value": true
+          },
+          {
+            "item_id": "build_artifact_versioning",
+            "value": true
+          },
+          {
+            "item_id": "build_notification",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_present",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_pipeline_fail",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_report",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_coverage_tracking",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_coverage_percent",
+            "operator": ">=",
+            "value": 80
+          },
+          {
+            "item_id": "unit_test_coverage_gate",
+            "value": true
+          },
+          {
+            "item_id": "deploy_present",
+            "value": true
+          },
+          {
+            "item_id": "deploy_environments",
+            "operator": "includes",
+            "value": "test"
+          },
+          {
+            "item_id": "deploy_environments",
+            "operator": "includes",
+            "value": "staging"
+          },
+          {
+            "item_id": "deploy_environments",
+            "operator": "includes",
+            "value": "production"
+          }
+        ],
+        "full_description": "Build, unit testi in deploy so popolnoma avtomatizirani z več prožilci. Pokritost kode je vsaj 80 % z definiranim pragom. Artefakti so verziionirani. Deploy pokriva produkcijsko okolje.",
+        "id": 5,
+        "improvement_suggestions": {
+          "build_artifact_versioning": "Uvedite avtomatsko verzioniranje artefaktov (semantična verzija, git tag, build number).",
+          "build_notification": "Dodajte obvestila ekipi ob uspehu ali neuspehu build-a.",
+          "build_other_triggers": "Nastavite prožilca PUSH in PULLRQ za build.",
+          "deploy_environments": "Dodajte avtomatski deploy v okolja: test, staging in production.",
+          "unit_test_coverage_gate": "Definirajte minimalni prag pokritosti kode; cevovod naj ne uspe, če je pokritost nižja.",
+          "unit_test_coverage_percent": "Povečajte pokritost kode s testi na vsaj 80 %."
+        },
+        "label": "Nivo 5 – Optimizacija",
+        "short_description": "Cevovod je v celoti avtomatiziran, se meri in nenehno izboljšuje."
+      },
+      {
+        "criteria": [
+          {
+            "item_id": "build_present",
+            "value": true
+          },
+          {
+            "item_id": "build_other_triggers",
+            "operator": "includes",
+            "value": "PUSH"
+          },
+          {
+            "item_id": "build_artifacts_stored",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_present",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_pipeline_fail",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_report",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_coverage_tracking",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_coverage_percent",
+            "operator": ">=",
+            "value": 60
+          },
+          {
+            "item_id": "deploy_present",
+            "value": true
+          },
+          {
+            "item_id": "deploy_environments",
+            "operator": "includes",
+            "value": "test"
+          },
+          {
+            "item_id": "deploy_environments",
+            "operator": "includes",
+            "value": "staging"
+          }
+        ],
+        "full_description": "Build in unit testi so avtomatizirani z vsaj enim prožilcem. Pokritost kode je vsaj 60 %. Artefakti se hranijo. Deploy je avtomatiziran in pokriva vsaj staging okolje.",
+        "id": 4,
+        "improvement_suggestions": {
+          "build_artifacts_stored": "Konfigurirajte shranjevanje build artefaktov (GitHub Artifacts, Nexus, Artifactory …).",
+          "build_other_triggers": "Nastavite prožilec PUSH za avtomatski build ob vsakem commitu.",
+          "deploy_environments": "Dodajte avtomatski deploy v okolji test in staging.",
+          "unit_test_coverage_percent": "Povečajte pokritost kode s testi na vsaj 60 %.",
+          "unit_test_coverage_tracking": "Dodajte merjenje pokritosti kode (JaCoCo, Istanbul, Coverage.py …).",
+          "unit_test_pipeline_fail": "Nastavite cevovod, da se ustavi ob neuspehu unit testov (fail-fast).",
+          "unit_test_report": "Generirajte testno poročilo in ga shranjujte kot artefakt."
+        },
+        "label": "Nivo 4 – Kvantitativno upravljan",
+        "short_description": "Ključne faze so avtomatizirane, pokritost kode se meri, deploy pokriva staging."
+      },
+      {
+        "criteria": [
+          {
+            "item_id": "build_present",
+            "value": true
+          },
+          {
+            "item_id": "build_other_triggers",
+            "operator": "includes",
+            "value": "PUSH"
+          },
+          {
+            "item_id": "unit_test_present",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_pipeline_fail",
+            "value": true
+          },
+          {
+            "item_id": "unit_test_report",
+            "value": true
+          },
+          {
+            "item_id": "deploy_present",
+            "value": true
+          }
+        ],
+        "full_description": "Avtomatizirani build se sproži ob vsaj enem dogodku. Unit testi so del cevovoda, ustavijo ga ob neuspehu in generirajo poročilo. Deploy je prisoten.",
+        "id": 3,
+        "improvement_suggestions": {
+          "build_other_triggers": "Nastavite prožilec PUSH za avtomatski build ob vsakem commitu.",
+          "deploy_present": "Uvedite avtomatiziran deploy korak v cevovod.",
+          "unit_test_pipeline_fail": "Nastavite cevovod, da se ustavi ob neuspehu unit testov.",
+          "unit_test_report": "Generirajte testno poročilo."
+        },
+        "label": "Nivo 3 – Konsistenten",
+        "short_description": "Build in unit testi so avtomatizirani z vsaj enim prožilcem. Deploy je prisoten."
+      },
+      {
+        "criteria": [
+          {
+            "item_id": "build_present",
+            "value": true
+          },
+          {
+            "item_id": "build_other_triggers",
+            "operator": "includes",
+            "value": "PUSH"
+          },
+          {
+            "item_id": "unit_test_present",
+            "value": true
+          }
+        ],
+        "full_description": "Obstaja avtomatizirani build korak z vsaj enim prožilcem. Unit testi so del cevovoda.",
+        "id": 2,
+        "improvement_suggestions": {
+          "build_other_triggers": "Nastavite vsaj en avtomatski prožilec za build (npr. PUSH).",
+          "build_present": "Uvedite avtomatiziran build korak (npr. GitHub Actions, GitLab CI, Jenkins).",
+          "unit_test_present": "Dodajte avtomatizirano izvajanje unit testov v cevovod."
+        },
+        "label": "Nivo 2 – Ponovljiv",
+        "short_description": "Osnovni build in unit testi so avtomatizirani."
+      },
+      {
+        "criteria": [],
+        "full_description": "Nivo 1 se dodeli, kadar cevovod ne izpolnjuje pogojev nobenega višjega nivoja. Procesi so ročni ali nedefinirani.",
+        "id": 1,
+        "improvement_suggestions": {
+          "build_present": "Začnite z uvedbo avtomatiziranega build koraka (npr. GitHub Actions, GitLab CI, Jenkins).",
+          "unit_test_present": "Dodajte enote kode s testi in jih vključite v cevovod."
+        },
+        "label": "Nivo 1 – Regresiven",
+        "short_description": "Ni avtomatiziranega cevovoda ali pa je prisoten le ročni build brez testov."
+      }
+    ],
+    "title": "CI/CD Pipeline Maturity Model – Pravila za določanje nivoja zrelosti",
+    "version": "1.0"
+  },
+  "pipelinePost": {
+    "name": "zk-perf-2026-11-18T07-05-44-345Z-42f9d6-preflight",
+    "repoId": "synthetic-performance",
+    "repoLink": "https://example.invalid/zk/performance",
+    "assessor": "ZK synthetic performance user",
+    "date": "2026-11-18",
+    "version": "1.0",
+    "answers": {
+      "build": true,
+      "build_present": true,
+      "build_manual_trigger": true,
+      "build_other_triggers": [
+        "PUSH",
+        "PULLRQ"
+      ],
+      "build_dedicated_server": true,
+      "build_explicit_logging": true,
+      "build_artifacts_stored": true,
+      "build_artifact_versioning": true,
+      "build_notification": true,
+      "build_other": "Synthetic CI/CD performance assessment",
+      "unit_testing": true,
+      "unit_test_present": true,
+      "unit_test_manual_trigger": true,
+      "unit_test_triggers": [
+        "PUSH",
+        "PULLRQ"
+      ],
+      "unit_test_dedicated_server": true,
+      "unit_test_requires_build": true,
+      "unit_test_logging": true,
+      "unit_test_report": true,
+      "unit_test_artifacts_stored": true,
+      "unit_test_notification": true,
+      "unit_test_pipeline_fail": true,
+      "unit_test_auto_issue": true,
+      "unit_test_coverage_tracking": true,
+      "unit_test_coverage_percent": 85,
+      "unit_test_coverage_gate": true,
+      "unit_testing_other": "Synthetic CI/CD performance assessment",
+      "deploy": true,
+      "deploy_present": true,
+      "deploy_manual_trigger": true,
+      "deploy_triggers": [
+        "PUSH",
+        "PULLRQ"
+      ],
+      "deploy_depends_on": [
+        "BUILD",
+        "UNITTEST"
+      ],
+      "deploy_logging": true,
+      "deploy_environments": [
+        "test",
+        "staging"
+      ],
+      "deploy_other": "Synthetic CI/CD performance assessment",
+      "other": true,
+      "other_description": "Synthetic CI/CD performance assessment"
+    },
+    "score": 100,
+    "level": 4
+  },
+  "answerCount": 36
+}

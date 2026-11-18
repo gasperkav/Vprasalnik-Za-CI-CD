@@ -1,0 +1,20 @@
+{
+  "runId": "2026-11-17T22-07-12-551Z-3f2aa2",
+  "auditedUtc": "2026-11-17T22:12:14.678Z",
+  "result": "PASS",
+  "checks": [
+    "raw JSON parses",
+    "request and journey counts",
+    "6 calls per successful journey",
+    "error and status totals",
+    "phase and endpoint percentiles",
+    "aggregate percentiles from merged samples",
+    "throughput arithmetic",
+    "plan and source SHA-256 match",
+    "no credential fields in raw records",
+    "no remaining test pipelines"
+  ],
+  "records": 24169,
+  "requests": 20122,
+  "phases": 15
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "name": "ZK-4 HTTP system performance tests",
+  "baseUrl": "http://127.0.0.1:3002",
+  "questionnaireVersion": "1.0",
+  "requestTimeoutMs": 5000,
+  "healthIntervalMs": 1000,
+  "load": [
+    { "name": "ramp-up-1", "vus": 1, "seconds": 5, "thinkMs": 1000 },
+    { "name": "ramp-up-3", "vus": 3, "seconds": 5, "thinkMs": 1000 },
+    { "name": "ramp-up-5", "vus": 5, "seconds": 5, "thinkMs": 1000 },
+    { "name": "steady", "vus": 5, "seconds": 60, "thinkMs": 1000 },
+    { "name": "ramp-down-5", "vus": 5, "seconds": 5, "thinkMs": 1000 },
+    { "name": "ramp-down-3", "vus": 3, "seconds": 5, "thinkMs": 1000 },
+    { "name": "ramp-down-1", "vus": 1, "seconds": 5, "thinkMs": 1000 }
+  ],
+  "stress": [
+    { "name": "stress-5", "vus": 5, "seconds": 20, "thinkMs": 0 },
+    { "name": "stress-10", "vus": 10, "seconds": 20, "thinkMs": 0 },
+    { "name": "stress-20", "vus": 20, "seconds": 20, "thinkMs": 0 },
+    { "name": "stress-40", "vus": 40, "seconds": 20, "thinkMs": 0 },
+    { "name": "stress-80", "vus": 80, "seconds": 20, "thinkMs": 0 },
+    { "name": "stress-160", "vus": 160, "seconds": 20, "thinkMs": 0 },
+    { "name": "recovery", "vus": 5, "seconds": 30, "thinkMs": 1000 }
+  ],
+  "smoke": [ { "name": "smoke", "vus": 1, "seconds": 3, "thinkMs": 200 } ],
+  "acceptance": {
+    "httpP95MsExclusive": 200,
+    "httpP99MsExclusive": 500,
+    "requestErrorPercentExclusive": 1,
+    "journeyErrorPercentExclusive": 1,
+    "minimumLoadSteadyRequestsPerSecond": 15,
+    "maximumDataIntegrityFailures": 0,
+    "maximumHealthFailures": 0,
+    "maximumRemainingTestPipelines": 0,
+    "minimumMeasuredRequestsPerPhase": 30,
+    "generatorEventLoopP99MsExclusive": 100,
+    "generatorCpuPercentOfOneCoreExclusive": 90,
+    "stressSaturation": "At least one stress phase violates the latency/error SLO, or throughput grows <20% between adjacent doubled VU counts while p95 grows >=50%.",
+    "memoryLeakCriterion": "Not asserted: short test and no target-process telemetry cannot establish absence of a leak."
+  },
+  "safety": {
+    "localTargetsOnly": true,
+    "maximumVus": 160,
+    "maximumConsecutiveHealthFailures": 3,
+    "stopAtStageBoundaryIfRequestErrorPercentAtLeast": 5
+  }
+}

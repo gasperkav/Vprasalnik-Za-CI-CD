@@ -235,11 +235,8 @@ Izbrana je ekipa **štirih članov, vsak ima natanko tri scenarije**. Status pri
 | TS-07 | Trajna hramba in CRUD ocen | Validacija imena, baza, restart, filtri, urejanje, brisanje | Član 3 | Pripravljeno za izvedbo |
 | TS-08 | Zgodovina in sprememba vprašalnika | Nova verzija, read-only, isti repo, posodobitev | Član 3 | Pripravljeno za izvedbo |
 | TS-09 | Izpad in omejitve dostopa | Offline/online, API pravice, ločitev sej | Član 3 | Pripravljeno za izvedbo |
-| TS-10 | Urejevalnik vprašalnika | JSON, kategorije, elementi, različice, CRUD | Član 4 | Pripravljeno za izvedbo |
-| TS-11 | Urejevalnik pravil | JSON/vizualni kriteriji, priporočila, različice | Član 4 | Pripravljeno za izvedbo |
-| TS-12 | Od dodelitve do zaključka | Uporabniki, skupine, vabilo, ocena, nadgradnja | Član 4 | Pripravljeno za izvedbo |
 
-Vrstni red: E-01 → TS-01 → TS-02/03/04/05/06/07 → priprava Q90.1/R90.1 iz 6.A → TS-08 → TS-09 → TS-10/11/12. TS-08 lahko podatke uvozi sam ali uporabi začetne korake TS-10/11. Testne konfiguracije se brišejo šele po odvisnih scenarijih. Izpada TS-09 ne izvajajte sočasno z online testi.
+Vrstni red: E-01 → TS-01 → TS-02/03/04/05/06/07 → priprava Q90.1/R90.1 iz 6.A → TS-08 → TS-09. Testne konfiguracije se brišejo šele po odvisnih scenarijih. Izpada TS-09 ne izvajajte sočasno z online testi.
 
 ## 5. Predloga specifikacije in dnevnika
 
@@ -703,164 +700,6 @@ Pri uvozu aplikacija iz ID qa_build izpelje nadkategorijo **Neprekinjena integra
 HTTP preizkuse izvajajte ročno v DevTools z veljavnim žetonom trenutne seje, v testnem okolju. Žetona ne kopirajte v poročilo. Neuspeh enega varnostnega koraka ne spremeni pričakovanj drugih; če nadaljevanje ni mogoče, zapišite blokado.
 
 
-### TS-10 – Urejevalnik vprašalnika
-
-| Atribut | Specifikacija |
-|---|---|
-| ID / Title | TS-10 / Urejevalnik vprašalnika |
-| Author / Responsible Person | ChatGPT/Codex (osnutek) / Član 4 |
-| Objective / Purpose | Preveriti življenjski cikel konfiguracije: uvoz, prikaz petih tipov, CRUD, izvoz in ponovni uvoz. |
-| Traceability / Related Functionality | F-04, F-11; R-07; Builder, questionnaire/categories API |
-| Prioriteta | Visoka |
-| Preconditions | E-01; C admin. TS-08 zaključen in Q90.1 obnovljen iz 6.A; Q/R1 in Q/R2 se ne spreminjajo. R90.1 pripravljen. |
-| Test Environment | E-01; dejanske verzije in profil v dnevniku |
-| Test Data | Datoteke iz 6.A; Q90.2 za urejanje, Q90.3 za povratni uvoz; nadkategorija QA dodatno, kategorija QA kategorija, element QA pogoj in otrok QA podatek; opis QA pomoc. |
-| Postconditions / cleanup | Izbrišite testne ocene Q90.2/90.3, nato Q90.3 in Q90.2; Q90.1/R90.1 ostaneta do konca TS-11. Če je CRUD blokiran, zabeležite INC in odstranite samo testno različico. |
-
-| Korak | Akcija / Test Procedure | Pričakovani rezultat / Expected Result | Dejanski rezultat / Actual Result | Status PASS/FAIL | Opombe / dokazilo |
-|---|---|---|---|---|---|
-| 1 | Odprite Form Builder → ⇩ Uvozi konfiguracijo in izberite qa_invalid.json, nato qa_wrong_shape.json. | Prvi uvoz javi Napaka pri uvozu: z opisom razčlenitve; drugi Napačen format datoteke za vprašalnik. Obstoječa definicija ostane uporabna. | | | |
-| 2 | Uvozite qa_questionnaire_90_1.json (če še ni pripravljen) in qa_questionnaire_90_2.json. Na Aktivna verzija: izberite 90.2. | Uvoz prikaže novo različico in QA Build. Preverite uspešen strežniški zapis ter GET po osvežitvi; samo obvestilo »uspešno uvožen« ni dokaz trajnosti. Q1/Q2 sta še na voljo. | | | |
-| 3 | Kot A P-START Q90.2/R90.1; odprite QA Build, QA korak je prisoten označite DA; QA opomba = Šumniki čšž 2026; QA stevilo = 60; QA orodja = Orodje A in Orodje B. | Vidni so yes_no_na, text, numeric in multiselect; pomoč vsebuje Testno vprasanje DA ali NA. Obe možnosti sta izbrani hkrati. Izračun 4/4, 100 % po P-CALC, stopnja 2 (QA potrjena). Uporabite ime QA-ZK-TS10-TIPI; shranjeno oceno nato odstranite. | | | |
-| 4 | V C vrnite Form Builder 90.2. Odprite nadkategorijo in uporabite Razširi vse, nato Skrči vse. | Podsekcije se razprejo/zaprejo; vprašanja in podatki konfiguracije niso izbrisani. Zaprto nadkategorijo po potrebi najprej ročno odprite. | | | |
-| 5 | Kliknite ＋ Nova kategorija; prazno Ime nadkategorije * poskusite shraniti. Nato vnesite QA dodatno in shranite. | Prazno ime: Ime je obvezno. Veljavno ustvari nadkategorijo QA dodatno z začetno Nova podkategorija; dejanje ni dodajanje vprašanja. | | | |
-| 6 | Pri QA dodatno kliknite ＋ Podkat. (Dodaj podkategorijo). Prazno Naslov kategorije * shranite, nato nastavite QA kategorija; Nadkategorija = QA dodatno; Shrani kategorijo. | Prazno: Naslov kategorije je obvezen. Veljavno: nova QA kategorija v izbrani nadkategoriji; shranjevanje mora potrditi strežnik. | | | |
-| 7 | Pri QA kategorija kliknite ＋ Element. Prazno Oznaka (vprašanje) * → Shrani element. Nato Oznaka = QA pogoj, Tip odgovora = Potrditveno polje, Opis / pomoč = QA pomoc; shranite. | Prazno: Oznaka je obvezna. Veljavno: QA pogoj je dodan z opisom in tipom checkbox; preverite obnovo po osvežitvi. | | | |
-| 8 | Pri QA pogoj kliknite ＋ (Dodaj pod-element); vnesite QA podatek, Tip odgovora = Besedilo; shranite. Nato Uredi otroka v QA podatek urejen. | Otrok je pod QA pogoj, po urejanju ima novo oznako. Pri novi oceni Q90.2/R90.1 se otrok omogoči šele pod DA, pomoč prikazuje QA pomoc. To dopolni preverjanje petega tipa checkbox. | | | |
-| 9 | Z Uredi kategorijo preimenujte QA kategorija v QA kategorija urejena; z namigom Preimenuj nadkategorijo spremenite QA dodatno v QA dodatno urejeno. Osvežite stran in preverite isti Q90.2. | Sprejemno preverjanje: imena, hierarhija in otrok ostanejo pravilno shranjeni. Če se ime nadkategorije znova izpelje iz ID ali API CRUD odpove, FAIL/INC, ne zgolj lokalni PASS. | | | |
-| 10 | Izrecno izberite Q90.2 tudi prek P-START, nato se vrnite v Form Builder 90.2. ⇧ Izvozi nadkategorijo → Neprekinjena integracija (CI) → Izvozi v JSON. | Prenese se JSON z version 90.2 in sekcijo qa_build. Vsebuje qa_gate, tri otroke, opis, tipe in možnosti A/B. Izvoz obsega izbrano nadkategorijo, ne vseh nadkategorij. | | | |
-| 11 | V kopiji izvoženega JSON spremenite version v 90.3, title v QA povratni uvoz; datoteko uvozite. Osvežite in odprite Q90.3. | Ustvarjena samostojna Q90.3, ista QA Build in enaki tipi/možnosti/otroci. Q90.2 še obstaja; ne sme se tiho prepisati druga različica. | | | |
-| 12 | V Q90.2 pri QA podatek urejen kliknite X (Izbriši); v »Izbrisati ta element?« prekličite, nato ponovite in potrdite. | Preklic ohrani otroka; potrditev ga odstrani. QA pogoj ostane. Osvežitev potrdi strežniško stanje. | | | |
-| 13 | Pri QA kategorija urejena izberite brisanje; potrditev »Izbrisati to kategorijo in vse njene elemente?« najprej prekličite, nato potrdite. | Preklic ničesar ne odstrani; potrditev odstrani to kategorijo z elementi. QA Build je nespremenjena. | | | |
-| 14 | Ko testnih ocen ni več, izberite Q90.3 → Izbriši celoten vprašalnik; enkrat prekličite, nato potrdite. Ponovite za Q90.2 in preverite po osvežitvi. | Preklic ohrani različico; potrditev odstrani samo izbrano testno različico. Q1.0, Q2.0 in Q90.1 ostanejo. Če predhodni koraki niso uspeli, dokumentirajte dejansko čiščenje in blokade. | | | |
-
-| Dnevnik TS-10 | Vnos ob izvedbi |
-|---|---|
-| RUN-ID / ponovitev | |
-| Datum izvedbe, začetek/konec, časovni pas | |
-| Izvajalec | |
-| Commit / lokalne spremembe | |
-| OS / brskalnik / različica / profil / E / Q / R | |
-| Končni status scenarija | |
-| Incidenti / dokazila / odstopanja | |
-
-Možnosti multiselect se v tem UI ne urejajo kot ločen seznam; zato jih določa uvoženi JSON. Preverjanje trajnosti preimenovanja je sprejemni kriterij R-07. Scenarij ne predpostavlja, da lokalni videz dokazuje uspešno C++ operacijo.
-
-
-### TS-11 – Urejevalnik pravil
-
-| Atribut | Specifikacija |
-|---|---|
-| ID / Title | TS-11 / Urejevalnik pravil |
-| Author / Responsible Person | ChatGPT/Codex (osnutek) / Član 4 |
-| Objective / Purpose | Preveriti konfiguracijo pravil, mejne kriterije, priporočila, enakovrednost vizualnega/JSON urejanja in trajno izbiro R. |
-| Traceability / Related Functionality | F-06, F-12; R-02, R-04; Rules, JS izračun, rules versions API |
-| Prioriteta | Visoka |
-| Preconditions | E-01; C admin, A member; izvirni Q90.1 iz 6.A obnovljen po TS-08. Uporabljajte samo R90.1/90.2; obstoječih R1/R2 ne spreminjajte. |
-| Test Environment | E-01; dejanske verzije in profil v dnevniku |
-| Test Data | qa_rules_90_1.json, qa_rules_90_2.json, neveljavni datoteki iz 6.A; K60/K100/S60 spodaj; D-QA59/60/100. Imena ocen QA-ZK-TS11-59, -60, -VISUAL, -100. |
-| Postconditions / cleanup | Po dokazih odstranite testne ocene, nato R90.2; Q90.1/R90.1 lahko odstranite po vseh odvisnih testih. Če legacy zapis spremeni druge podatke pravil, zabeležite odstopanje in obnovite testno bazo iz referenčnih JSON. |
-
-| Korak | Akcija / Test Procedure | Pričakovani rezultat / Expected Result | Dejanski rezultat / Actual Result | Status PASS/FAIL | Opombe / dokazilo |
-|---|---|---|---|---|---|
-| 1 | Pravila zrelosti → ⇩ Uvozi pravila; izberite qa_invalid.json, nato qa_wrong_shape.json. | Neveljaven JSON: Napaka pri uvozu: z opisom. Napačna struktura: Napačen format datoteke za pravila zrelosti. Nobena obstoječa različica se ne izbriše. | | | |
-| 2 | Uvozite R90.1, če še ni pripravljen, in R90.2; v izbirniku različic izberite 90.2. Preverite uspešen zapis in GET po osvežitvi. | R90.2 vsebuje stopnji 1 QA osnovna in 2 QA potrjena. R1/R2 ter R90.1 ostanejo ločeni; sporočilo brez uspešne obnove ni dokaz hrambe. | | | |
-| 3 | Preklopite ▤ Kartice in ▦ Tabela; razprite/zaprite prikaz pogojev. Kliknite ＋ Nova stopnja, pustite Ime / Oznaka stopnje * prazno in Shrani stopnjo; nato zaprite urejanje. | Pogleda kažeta iste podatke; prazno ime: Ime stopnje je obvezno. Stopnja ni ustvarjena. | | | |
-| 4 | Pri stopnji 2 Uredi → JSON; Kriteriji (JSON format) = { in Shrani stopnjo; nato kriteriji = {} in znova shranite. | Prvi poskus: Neveljaven JSON za kriterije: z opisom razčlenitve. Drugi: Kriteriji morajo biti JSON polje (array). Obstoječi pogoji niso prepisani. | | | |
-| 5 | Vnesite celoten K60; Priporočila za izboljšanje (JSON format) = []; poskusite shraniti. Nato vnesite S60, Kratek opis = QA meja 60, Podroben opis = Preverjanje spodnje meje; Shrani stopnjo. | Za []: Priporočila morajo biti JSON objekt. Veljavno shranjevanje uspe; po ponovnem odprtju JSON vsebuje operator >= in številko 60, opis ter S60. | | | |
-| 6 | Kot A P-START Q90.1/R90.2, D-QA59, ime QA-ZK-TS11-59; P-CALC in shranite. Repo pustite prazen, da ni ponujena združitev po repozitoriju. | 100 %, Stopnja 1 (QA osnovna); pri naslednji stopnji priporočilo Vnesite najmanj 60. Neizpolnjen je samo kriterij števila. | | | |
-| 7 | Nov P-START Q90.1/R90.2, D-QA60, ime QA-ZK-TS11-60; izračunajte in shranite. | 100 %, Stopnja 2 (QA potrjena). Vrednost 60 doseže vključujočo mejo; pri 59 ni smela uspeti. | | | |
-| 8 | V čistem profilu A odprite obe oceni in njun izračun; preverite, da ostaja povezana izbira R90.2 ob Q90.1. | Sprejemno preverjanje R-04: ocena 59 še vedno stopnja 1, ocena 60 stopnja 2. Če se po strežniški obnovi uporabi R90.1 (ki za 59 da stopnjo 2), FAIL/INC zaradi izgubljene ločene različice pravil. | | | |
-| 9 | C pri stopnji 2 v R90.2 odpre Vizualni urejevalnik. Pri pogoju qa_count izrecno izbere operator ≥ in vrednost 60 ter shrani; A začne novo D-QA60, QA-ZK-TS11-VISUAL. | Sprejemno preverjanje R-02: isti pomen pogoja mora še vedno dati stopnjo 2. Če se zapiše gte in izračun pade na stopnjo 1, FAIL; shrani dokaz izvoženega operatorja in rezultata. | | | |
-| 10 | C odpre stopnjo 2 v JSON načinu; znova vnese K60 in S60 ter shrani. Nato ＋ Nova stopnja: Številka stopnje = 3, Ime / Oznaka = QA napredna, Kratek opis = QA meja 100, JSON kriteriji K100, priporočila {}; Shrani stopnjo. | Po obnovi veljajo pravilni operatorji. R90.2 ima tri stopnje; tretja zahteva prisoten korak in število vsaj 100. Minimalni rezultat (%) pustite prazen; tu testiramo kriterijska pravila. | | | |
-| 11 | A nov P-START Q90.1/R90.2, D-QA100, ime QA-ZK-TS11-100; izračunajte. C ⇧ Izvozi pravila pri R90.2. | Rezultat Stopnja 3 (QA napredna), 100 % po P-CALC. Izvoz maturity_rules_export_90.2.json vsebuje version 90.2, vse tri stopnje, K60/K100 in S60 brez izgube numeričnih vrednosti. | | | |
-| 12 | C pri stopnji 3 izbere X Izbriši; potrditev najprej prekliče, nato ponovi in potrdi; A na novem D-QA100 ponovno izračuna. | Preklic ohrani stopnjo; potrditev odstrani samo stopnjo 3. Nov izračun s preostalima praviloma vrne stopnjo 2. Testna ocena za ponovitev: QA-ZK-TS11-PO-BRISANJU. | | | |
-| 13 | Po brisanju svojih testnih ocen C pri R90.2 izbere Izbriši celotna pravila; prekliče, nato potrdi in osveži. | Preklic ohrani R90.2; potrditev jo odstrani. R1.0/R2.0/R90.1 ostanejo nespremenjeni in uporabni. | | | |
-
-| Dnevnik TS-11 | Vnos ob izvedbi |
-|---|---|
-| RUN-ID / ponovitev | |
-| Datum izvedbe, začetek/konec, časovni pas | |
-| Izvajalec | |
-| Commit / lokalne spremembe | |
-| OS / brskalnik / različica / profil / E / Q / R | |
-| Končni status scenarija | |
-| Incidenti / dokazila / odstopanja | |
-
-Pri izračunu uporabite novo oceno za vsako varianto; ne mešajte rezultata že odprtega obrazca s kasnejšo spremembo pravil. Neveljavni operator v vizualnem toku je pričakovano tveganje, ne vnaprej vpisan FAIL.
-
-#### Podatki K60, K100 in S60 za TS-11
-
-**K60** – celotna vrednost polja Kriteriji (JSON format):
-
-~~~json
-[
-  {"item_id": "qa_gate", "operator": "=", "value": true},
-  {"item_id": "qa_count", "operator": ">=", "value": 60}
-]
-~~~
-
-**K100:** isti JSON, vendar pri qa_count zamenjajte value 60 z 100. **S60** – celotna vrednost polja Priporočila za izboljšanje (JSON format):
-
-~~~json
-{"qa_count": "Vnesite najmanj 60."}
-~~~
-
-D-QA59 = D-QA z QA stevilo = 59; D-QA60 = D-QA; D-QA100 = D-QA z QA stevilo = 100. V vseh so izpolnjena štiri vprašanja: 100 %. Razlikuje se stopnja po kriterijih, ne odstotek.
-
-
-### TS-12 – Od dodelitve do zaključka
-
-| Atribut | Specifikacija |
-|---|---|
-| ID / Title | TS-12 / Od dodelitve do zaključka |
-| Author / Responsible Person | ChatGPT/Codex (osnutek) / Član 4 |
-| Objective / Purpose | Preveriti celoten večuporabniški tok admin → skupina/dodelitev → povabljeni uporabnik → shranjena ocena → spremljanje napredka in nadgradnja računa. |
-| Traceability / Related Functionality | F-13, F-14, F-15; R-05; AdminDashboard, UserAssessments, auth/users/groups/assignments API |
-| Prioriteta | Visoka |
-| Preconditions | E-01; C admin, prazna ločena profila U/V. U/V in skupina iz 3.3 še ne obstajajo; Q/R1.0 in Q/R2.0 ustrezata referenčnim JSON. Poštnega sporočila ne pošljite. |
-| Test Environment | E-01; dejanske verzije in profil v dnevniku |
-| Test Data | U/V e-naslova in skupina iz 3.3; GitHub repozitorija iz 3.3; referenčnemu dodelite Q1/R1, vitejs/vite Q2/R2. D3 = 21 %, nivo 3; novo geslo ZkUpgrade!2026. |
-| Postconditions / cleanup | Po dokazih odstranite testno oceno, testno skupino/dodelitve in računa U/V. Admin in drugi računi/configi ostanejo. Kopije vabil hranite le kot testne dokaze, brez veljavnih žetonov. |
-
-| Korak | Akcija / Test Procedure | Pričakovani rezultat / Expected Result | Dejanski rezultat / Actual Result | Status PASS/FAIL | Opombe / dokazilo |
-|---|---|---|---|---|---|
-| 1 | Admin panel → Upravljanje uporabnikov. Pustite Gmail naslov uporabnika * prazen in kliknite + Ustvari račun uporabnika; ponovite z neveljavno vrednostjo qa-brez-afne. | Prazno: Prosimo, vnesite e-poštni naslov. Neveljavno: Vnesite veljaven Gmail naslov. Uporabnik ni ustvarjen. | | | |
-| 2 | Vnesite U e-naslov; Vloga v sistemu = Navaden uporabnik (ocenjevalec); + Ustvari račun uporabnika. Zaprite morebitni poziv poštnega odjemalca brez pošiljanja. | POST /api/users 201; vloga user, online username je celotni e-naslov. UI pokaže ustvarjen račun in pripravljeno vabilo. Mailto je priprava, ne dokaz poslane pošte. | | | |
-| 3 | Kliknite ⎘ Kopiraj prijavni link in ga prilepite v lokalni urejevalnik; enako Kopiraj e-sporočilo. Kliknite ✉ Odpri e-pošto in samo preglejte/zaprite osnutek. | Kopiran link vsebuje invite_email z U naslovom. Sporočilo vsebuje uporabniško ime, prijavni link in link set_password. Osnutek ima pravilen testni naslov in zadevo; nobeno sporočilo se ne pošlje. | | | |
-| 4 | Poskusite ponovno ustvariti isti U, nato ustvarite V z enako vlogo in shranite kopijo njegovega vabila. | Podvojeni U: HTTP 409 User with this email already exists.; ni dvojnega računa. V: 201 in ločen ID; poštni poziv znova zaprite. | | | |
-| 5 | Kliknite ⇩ Izvozi v Excel (imena & gesla); odprite preneseni uporabniki_izvoz_YYYY-MM-DD.xls. | Prenese se HTML tabela v .xls, vsebuje U/V ter stolpce Ime in priimek, Uporabniško ime, Gmail naslov, Vloga. Karakterizacija: gesel ni kljub napisu gumba. Opozorilo pregledovalnika o formatu ni dokaz manjkajočih podatkov. | | | |
-| 6 | Skupine & Dodelitve: poskusite Ustvari skupino & dodeli ocenjevanja brez imena, nato samo z imenom skupine, nato z imenom in U brez repo, nato z repo https://example.com/repo. | Zaporedoma: Prosimo, vnesite ime skupine.; Izberite vsaj enega sodelujočega uporabnika.; Vnesite vsaj en GitHub repozitorij.; sporočilo Vnesite veljavne GitHub povezave z vzorcem. Noben neveljaven poskus ne ustvari skupine. | | | |
-| 7 | Ime skupine * = QA-ZK-SKUPINA-20261117; Izberite člane skupine * = U; GitHub repozitoriji za reševanje * = referenčni repo; Verzija Vprašalnika * = 1.0, Verzija Pravil Zrelosti * = 1.0; ustvarite. | Uspešni strežniški zapisi skupine in dodelitve; skupina vsebuje U in eno čakajočo dodelitev Q1/R1. Potrdite GET, ne le lokalne tabele. | | | |
-| 8 | Na kartici skupine izberite V in + Dodaj; osvežite. | Skupina ima U/V; V dobi eno čakajočo dodelitev istega repozitorija/Q1/R1. U nima podvojene dodelitve. | | | |
-| 9 | Kliknite + Dodaj link. GitHub povezava do repozitorija * = https://github.com/vitejs/vite; Q = 2.0, R = 2.0; Dodaj repozitorij. | Oba člana dobita novo dodelitev Q2/R2. Skupaj štiri dodelitve: dve na osebo. Obnova podatkov po osvežitvi potrdi enako stanje. | | | |
-| 10 | Spremljanje napredka → pri U ⎘ Kopiraj povezavo za ocenjevanje. Odprite kopiran link v ločenem praznem profilu U. | Online /api/auth/invite-login vrne 200 za user. Ocenjevanje cevovoda kaže samo U dodelitvi: Vsa dodeljena ocenjevanja 2, Čaka na oceno 2, Dokončano 0. Admin navigacije ni. | | | |
-| 11 | U pri vitejs/vite klikne ▶ Začni ocenjevanje; preveri naslov/vsebino Q2 Agile & Scrum in zaklenjene metapodatke. Vrne se na Ocenjevanje cevovoda brez shranjevanja. | Uporabljen je Q2/R2 za to dodelitev, ne globalni privzeti Q1. Imena/repozitorija ne more spremeniti. Dodelitev še čaka, ocena ni nastala. | | | |
-| 12 | U začne referenčni repo Q1/R1, izpolni D3, klikne Izračunaj zrelost in ✓ Shrani ocenjevanje; zabeležite ID ocene PID-U in dodelitve ASG-U. | Rezultat nivo 3; POST /api/pipelines 201 ter POST /api/assignments/ASG-U/complete 200. Po vrnitvi so števci 2 skupaj, 1 Čaka na oceno, 1 Dokončano; ocena pripada U in pravi dodelitvi. | | | |
-| 13 | Pri dokončani dodelitvi U klikne Preglej oceno; ponovi ogled po sveži online prijavi prek vabila v čistem profilu. | Prikazani rezultati D3, Stopnja 3 – Konsistenten po oznaki pravil; iz shranjenih odgovorov izhaja 21 %. Dokončanje je strežniško ohranjeno, ne samo lokalno. | | | |
-| 14 | C odpre Spremljanje napredka → Osveži, filtrira Ime uporabnika z U, Repozitorij (link / ime) z Vprasalnik-Za-CI-CD in Datum z dejanskim datumom ocene. Klikne Poglej odgovore. | U napredek odraža eno od dveh dokončanih nalog; pravi repo/datum in rezultati D3. Pregled odgovorov se ujema z U. Očiščeni API dokazi potrjujejo completed, ne samo lokalno samodejno popravljanje stanja. | | | |
-| 15 | V ločenem profilu V odprite set_password povezavo iz njegovega vabila. Novo geslo * in Potrdi novo geslo * najprej abc/abc, nato ZkUpgrade!2026/Razlicno!2026; Nastavi geslo →. | Prekratko geslo je zavrnjeno z Geslo mora imeti vsaj 6 znakov.; neusklajeno z Gesli se ne ujemata. Račun ostane nespremenjen. | | | |
-| 16 | Na isti strani v obe polji vnesite ZkUpgrade!2026 in Nastavi geslo →; poskusite online prijavo V s tem geslom. | Sprejemno preverjanje R-05: nastavitev mora biti strežniško potrjena in novo geslo uporabno. Ker pregledani backend nima /api/users/set-password, je to kandidat za FAIL/INC; uspeha ne predpostavite. Napaka V ne blokira neodvisne nadgradnje U. | | | |
-| 17 | U v svojem prijavljenem user profilu klikne Postani registriran uporabnik. Potrdi in nadgradi račun najprej s praznima poljema, nato abc/abc, nato ZkUpgrade!2026/Razlicno!2026. | Zaporedoma Izpolnite obe polji.; Geslo mora imeti vsaj 6 znakov.; Gesli se ne ujemata. Vloga U ostane user. | | | |
-| 18 | U vnese Novo geslo * = ZkUpgrade!2026 in Potrdi geslo * enako; Potrdi in nadgradi račun. | POST /api/auth/upgrade 200; vloga member, po obnovi običajna nadzorna plošča in možnost novih ocen. Lastna shranjena ocena ostane dostopna. | | | |
-| 19 | Odjavite U, odprite staro invite_email povezavo, nato opravite običajno prijavo z U e-naslovom/ZkUpgrade!2026. | Povabilo ne prijavi member računa brez gesla: /api/auth/invite-login 403, password_required. Običajna prijava uspe in obnovi member vlogo ter lastno oceno. | | | |
-| 20 | C pri skupini izbere X pri V (Odstrani člana iz skupine), najprej prekliče, nato potrdi in osveži. | Preklic ohrani člana/dodelitve. Potrditev odstrani V in njegovi nedokončani nalogi; U ostane s svojo dokončano ter čakajočo nalogo. Dokončana ocena U ni izbrisana. | | | |
-| 21 | U po shranjenih dokazih na svoji nadzorni plošči izbriše PID-U. C izbere Izbriši skupino, najprej prekliče, nato potrdi. | U odstrani samo svojo testno oceno. Preklic ohrani skupino; potrditev odstrani to skupino z njenimi dodelitvami. Nobena druga skupina ni spremenjena. | | | |
-| 22 | C v Upravljanje uporabnikov pri U klikne Izbriši, prekliče, nato potrdi; enako odstrani V. Osvežite in preverite, da običajna prijava odstranjenega U ne uspe. | Preklic ohrani račun; potrditev in strežniška obnova potrdita odstranitev U/V. Odstranjeni U se ne prijavi. Admin, A/B in ostale konfiguracije ostanejo. | | | |
-
-| Dnevnik TS-12 | Vnos ob izvedbi |
-|---|---|
-| RUN-ID / ponovitev | |
-| Datum izvedbe, začetek/konec, časovni pas | |
-| Izvajalec | |
-| Commit / lokalne spremembe | |
-| OS / brskalnik / različica / profil / E / Q / R | |
-| Končni status scenarija | |
-| Incidenti / dokazila / odstopanja | |
-
-Ob zabeleženem FAIL nadaljujte neodvisne korake, če je mogoče. Če manjkajoča strežniška dodelitev onemogoči reševanje, ga označite BLOCKED z vzrokom; lokalno ustvarjena nadomestna dodelitev ni dokaz uspeha E2E. Izpis odstotka 21 % preverite na member nadzorni plošči po nadgradnji ali iz shranjenih odgovorov; ResultsPanel nima samostojnega skupnega odstotka.
-
-
 ## 7. Test Incident / Defect Report – predloga
 
 Izpolnite ob vsakem FAIL oziroma nepojasnjenem dogodku. En incident lahko poveže več TS; različnih vzrokov ne združujte samo zato, ker se pojavijo na istem zaslonu. Statičnih tveganj R-01 … R-11 ne preimenujte v potrjene incidente brez dejanske izvedbe oziroma ločenega izrecnega pregleda.
@@ -956,9 +795,6 @@ Statusi ostanejo prazni do izvedbe. Če obstaja več RUN, navedite zadnji veljav
 | TS-07 | Član 3 / | | | | | |
 | TS-08 | Član 3 / | | | | | |
 | TS-09 | Član 3 / | | | | | |
-| TS-10 | Član 4 / | | | | | |
-| TS-11 | Član 4 / | | | | | |
-| TS-12 | Član 4 / | | | | | |
 
 ### 8.3 Zbirni rezultati vseh članov
 
@@ -967,18 +803,17 @@ Statusi ostanejo prazni do izvedbe. Če obstaja več RUN, navedite zadnji veljav
 | Član 1 | TS-01–TS-03 | 3 | | | | | | |
 | Član 2 | TS-04–TS-06 | 3 | | | | | | |
 | Član 3 | TS-07–TS-09 | 3 | | | | | | |
-| Član 4 | TS-10–TS-12 | 3 | | | | | | |
-| Skupaj | TS-01–TS-12 | 12 | | | | | | |
+| Skupaj | TS-01–TS-12 | 9 | | | | | | |
 
-Kontrola: PASS + FAIL + BLOCKED + NOT RUN = 12. Dodatni brskalnik in ponovitve niso novi scenariji; poročajte jih posebej kot RUN/variante. Delež izvedenih scenarijev = (PASS + FAIL) / 12 × 100 %. Delež uspešnih med izvedenimi = PASS / (PASS + FAIL) × 100 %; če ni izveden noben, rezultat ni določen, ne 100 %. Delno izveden scenarij brez opažene napake, a z blokiranimi koraki je BLOCKED. Število izvedenih kontrolnih točk navedite posebej, da povzetek ne skrije delno opravljene izvedbe.
+Kontrola: PASS + FAIL + BLOCKED + NOT RUN = 9. Dodatni brskalnik in ponovitve niso novi scenariji; poročajte jih posebej kot RUN/variante. Delež izvedenih scenarijev = (PASS + FAIL) / 9 × 100 %. Delež uspešnih med izvedenimi = PASS / (PASS + FAIL) × 100 %; če ni izveden noben, rezultat ni določen, ne 100 %. Delno izveden scenarij brez opažene napake, a z blokiranimi koraki je BLOCKED. Število izvedenih kontrolnih točk navedite posebej, da povzetek ne skrije delno opravljene izvedbe.
 
 | Dodatna metrika | Rezultat |
 |---|---|
-| Izvedeni scenariji / 12 | |
+| Izvedeni scenariji / 9 | |
 | Delež uspešnih med izvedenimi | |
 | Izvedeni koraki in variante / načrtovani | |
 | Funkcionalnosti F s preverjenimi pozitivnimi in negativnimi potmi | |
-| Odprti incidenti S1 / S2 / S3 / S4 | |
+| Odprti incidenti S1 / S2 / S3 | |
 | Ponovni testi uspešni / neuspešni / čakajoči | |
 | Brskalniki/okolja z dejanskimi dokazi | |
 
@@ -1002,18 +837,4 @@ Kontrola: PASS + FAIL + BLOCKED + NOT RUN = 12. Dodatni brskalnik in ponovitve n
 | Ponovno uporabni testni podatki in postopki | |
 | Nauki in izboljšave prihodnjega testiranja | |
 
-**Besedilna predloga končne ocene (izpolni ekipa):**
-
-> V obdobju ______ smo na izdaji/commitu ______ v okoljih ______ izvedli ______ od 12 scenarijev ter ______ kontrolnih točk/variant. Uspešnih je bilo ______ scenarijev, neuspešnih ______, blokiranih ______ in neizvedenih ______. Ključni tokovi ______ so bili potrjeni z dokazili ______. Odprti incidenti ______ vplivajo na ______. Izhodna merila so ______. Rešitev ocenjujemo kot ______, pod pogoji ______. Preostala tveganja sprejme ______; nadaljnje ukrepe izvede ______ do ______.
-
-Dokumentacija in prazne tabele same ne dokazujejo kakovosti rešitve. Končno oceno napišite šele na podlagi izvedenih testov in preverljivih dokazov.
-
-## 9. Kontrola pred ekipno oddajo
-
-- Za individualno oddajo uporabite obseg treh scenarijev iz zaključnega poročila. Pri ekipni izvedbi nadomestite Član 1–4 z dejanskimi imeni in ohranite tri scenarije na člana.
-- Potrdite različico testirane kode in uporabljene konfiguracije; k rezultatom ne pripisujte rezultatov drugega commita.
-- Izpolnite dejanske rezultate tudi pri PASS; pri FAIL dodajte INC in dokaz.
-- Izpolnite vse variante mejnih testov; »izveden TS-05« brez ločenih rezultatov za 59/60/61/79/80/81 ni zadosten zapis.
-- Online shranitev potrdite s HTTP in čisto sejo; lokalnega nadomestnega načina ne prištejte k potrditvi PostgreSQL.
-- Združite dnevnike vseh članov v poglavje 8, izpolnite preostala tveganja in sklep; priložite dokazila, ki ste jih dejansko zajeli.
 

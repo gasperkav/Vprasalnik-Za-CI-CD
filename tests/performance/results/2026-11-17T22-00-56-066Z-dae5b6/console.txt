@@ -1,0 +1,5 @@
+2026-11-17T22:00:57.360Z RUN 2026-11-17T22-00-56-066Z-dae5b6, target=http://127.0.0.1:3002, plan SHA-256=1d231cc271ca2d2d3030059caa8db668d095ac91c8b0febc364970d552ba27e2
+2026-11-17T22:00:59.019Z Preflight: 36 answers; persisted=true; score persisted=false
+2026-11-17T22:00:59.020Z START smoke/smoke: 1 VUs, 3s, think=200ms
+2026-11-17T22:01:02.037Z END smoke/smoke: req/s=9.966, p95=163.501ms, p99=298.241ms, errors=0%, cycles=5, SLO=true
+2026-11-17T22:01:02.061Z VERDICT {"load":"NOT_RUN","stress":"NOT_RUN","firstStressSloBreachVus":null,"plateauVus":null,"generatorValid":true,"memoryLeak":"NOT_ASSESSED","targetResourceTelemetry":"UNAVAILABLE","runningBuildMatchesSource":"UNVERIFIED","stoppedBySafety":false}

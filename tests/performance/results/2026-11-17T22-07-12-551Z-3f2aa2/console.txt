@@ -1,0 +1,35 @@
+2026-11-17T22:07:13.125Z RUN 2026-11-17T22-07-12-551Z-3f2aa2, target=http://127.0.0.1:3002, plan SHA-256=1d231cc271ca2d2d3030059caa8db668d095ac91c8b0febc364970d552ba27e2
+2026-11-17T22:07:13.442Z Preflight: 36 answers; persisted=true; score persisted=false
+2026-11-17T22:07:13.443Z START smoke/smoke: 1 VUs, 3s, think=200ms
+2026-11-17T22:07:16.708Z END smoke/smoke: req/s=14.753, p95=107.403ms, p99=126.043ms, errors=0%, cycles=8, SLO=true
+2026-11-17T22:07:16.709Z START load/ramp-up-1: 1 VUs, 5s, think=1000ms
+2026-11-17T22:07:21.790Z END load/ramp-up-1: req/s=5.906, p95=117.096ms, p99=181.217ms, errors=0%, cycles=5, SLO=true
+2026-11-17T22:07:21.790Z START load/ramp-up-3: 3 VUs, 5s, think=1000ms
+2026-11-17T22:07:26.923Z END load/ramp-up-3: req/s=17.539, p95=92.353ms, p99=120.01ms, errors=0%, cycles=15, SLO=true
+2026-11-17T22:07:26.923Z START load/ramp-up-5: 5 VUs, 5s, think=1000ms
+2026-11-17T22:07:31.936Z END load/ramp-up-5: req/s=23.963, p95=113.731ms, p99=138.669ms, errors=0%, cycles=20, SLO=true
+2026-11-17T22:07:31.936Z START load/steady: 5 VUs, 60s, think=1000ms
+2026-11-17T22:08:32.021Z END load/steady: req/s=23.55, p95=95.752ms, p99=145.244ms, errors=0.212%, cycles=238, SLO=true
+2026-11-17T22:08:32.022Z START load/ramp-down-5: 5 VUs, 5s, think=1000ms
+2026-11-17T22:08:41.345Z END load/ramp-down-5: req/s=12.453, p95=415.511ms, p99=1939.313ms, errors=0.862%, cycles=20, SLO=false
+2026-11-17T22:08:41.347Z START load/ramp-down-3: 3 VUs, 5s, think=1000ms
+2026-11-17T22:08:50.462Z END load/ramp-down-3: req/s=7.461, p95=158.316ms, p99=5003.939ms, errors=1.471%, cycles=12, SLO=false
+2026-11-17T22:08:50.462Z START load/ramp-down-1: 1 VUs, 5s, think=1000ms
+2026-11-17T22:08:55.641Z END load/ramp-down-1: req/s=6.959, p95=72.657ms, p99=86.583ms, errors=0%, cycles=6, SLO=true
+2026-11-17T22:08:55.642Z COOLDOWN 10s
+2026-11-17T22:09:05.641Z START stress/stress-5: 5 VUs, 20s, think=0ms
+2026-11-17T22:09:25.956Z END stress/stress-5: req/s=122.421, p95=91.613ms, p99=138.959ms, errors=0.161%, cycles=417, SLO=true
+2026-11-17T22:09:25.956Z START stress/stress-10: 10 VUs, 20s, think=0ms
+2026-11-17T22:09:50.110Z END stress/stress-10: req/s=126.971, p95=151.368ms, p99=443.837ms, errors=0.294%, cycles=516, SLO=true
+2026-11-17T22:09:50.110Z START stress/stress-20: 20 VUs, 20s, think=0ms
+2026-11-17T22:10:14.187Z END stress/stress-20: req/s=130.567, p95=373.523ms, p99=1548.043ms, errors=0.541%, cycles=534, SLO=false
+2026-11-17T22:10:14.187Z START stress/stress-40: 40 VUs, 20s, think=0ms
+2026-11-17T22:10:39.252Z END stress/stress-40: req/s=116.053, p95=1228.286ms, p99=1704.59ms, errors=0.516%, cycles=492, SLO=false
+2026-11-17T22:10:39.252Z START stress/stress-80: 80 VUs, 20s, think=0ms
+2026-11-17T22:11:04.319Z END stress/stress-80: req/s=116.657, p95=2987.006ms, p99=3460.606ms, errors=0.445%, cycles=494, SLO=false
+2026-11-17T22:11:04.319Z START stress/stress-160: 160 VUs, 20s, think=0ms
+2026-11-17T22:11:28.474Z END stress/stress-160: req/s=122.91, p95=5001.408ms, p99=5033.888ms, errors=5.73%, cycles=602, SLO=false
+2026-11-17T22:11:28.474Z Error safety threshold: skipping higher VUs, proceeding to recovery.
+2026-11-17T22:11:28.474Z START stress/recovery: 5 VUs, 30s, think=1000ms
+2026-11-17T22:11:58.673Z END stress/recovery: req/s=23.514, p95=102.323ms, p99=138.512ms, errors=0.282%, cycles=120, SLO=true
+2026-11-17T22:11:58.905Z VERDICT {"load":"FAIL","stress":"FAIL","firstStressSloBreachVus":20,"plateauVus":10,"firstStressJourneyErrorBreachVus":10,"generatorValid":true,"memoryLeak":"NOT_ASSESSED","targetResourceTelemetry":"UNAVAILABLE","runningBuildMatchesSource":"UNVERIFIED","stoppedBySafety":false}

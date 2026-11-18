@@ -1,0 +1,31 @@
+{
+  "utc": "2026-11-18T09:08:54.161Z",
+  "account": "zk_perf_51459fabee62",
+  "answerCount": 36,
+  "clientEvaluation": {
+    "score": 100,
+    "level": 4,
+    "levelName": "Nivo 4 – Kvantitativno upravljan",
+    "missing": [
+      "Za dosego stopnje Nivo 5 – Optimizacija morate izpolniti naslednje pogoje:",
+      "Dodajte avtomatski deploy v okolja: test, staging in production."
+    ]
+  },
+  "createdScore": 100,
+  "readBackScore": 0,
+  "scorePersisted": false,
+  "answersPersisted": true,
+  "backendEvaluation": {
+    "status": 200,
+    "ok": true,
+    "result": {
+      "level": 1,
+      "levelName": "Začetna",
+      "missing": [
+        "Ste na najvišji stopnji zrelosti!"
+      ],
+      "score": 100
+    }
+  },
+  "cleanupStatus": 204
+}
