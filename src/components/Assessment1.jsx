@@ -26,7 +26,7 @@ function QuestionItem({ item, depth = 0, parentDisabled = false, currentAssessme
         transition: 'all 0.2s ease',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+      <div data-testid={`question-${item.id}`} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
         <div style={{ fontSize: '0.88rem', fontWeight: depth === 0 ? '600' : '400', flex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span>{item.label}</span>
           {item.description && (
@@ -213,8 +213,11 @@ export default function Assessment1({
   rules,
   switchView,
   onRepoLinkChange,
-  initialName = '',
-  initialRepoLink = '',
+  name,
+  setName,
+  repoId,
+  repoLink,
+  setRepoLink,
   isReadOnly = false,
   createNewVersionMode = false,
   historicVersion = null,
@@ -234,10 +237,6 @@ export default function Assessment1({
     categories: categories ? categories.map(c => ({ id: c.id, items: c.items?.map(i => i.id) })) : null
   });
   
-  const [name, setName] = useState(initialName);
-  const [repoId, setRepoId] = useState('');
-  const [repoLink, setRepoLink] = useState(initialRepoLink);
-  const [results, setResults] = useState(null);
   const [expandedDescs, setExpandedDescs] = useState({});
   const [openCategories, setOpenCategories] = useState({});
   const [showYaml, setShowYaml] = useState(false);
@@ -268,26 +267,11 @@ export default function Assessment1({
     setExpandedDescs(prev => ({ ...prev, [id]: !prev[id] }));
 
   useEffect(() => {
-    if (currentAssessmentId) {
+    if (isReadOnly && currentAssessmentId) {
       const p = pipelines.find(x => String(x.id) === String(currentAssessmentId));
-      if (p) {
-        setName(p.name || '');
-        setRepoId(p.repoId || '');
-        const link = p.repoLink || '';
-        setRepoLink(link);
-        onRepoLinkChange?.(link);
-        if (isReadOnly) {
-          handleCalculate(p.answers);
-        }
-      }
-    } else {
-      setName(initialName);
-      setRepoId('');
-      setRepoLink(initialRepoLink);
-      onRepoLinkChange?.(initialRepoLink);
-      setResults(null);
+      if (p) handleCalculate(p.answers);
     }
-  }, [currentAssessmentId, pipelines, initialName, initialRepoLink]);
+  }, [currentAssessmentId, pipelines, isReadOnly]);
 
   const handleRepoLinkChange = (val) => {
     setRepoLink(val);
@@ -723,8 +707,9 @@ export default function Assessment1({
       <div className="card" style={{ marginBottom: '18px' }}>
         <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
           <div style={{ width: '220px', flexShrink: 0 }}>
-            <label className="form-label">Ime cevovoda</label>
+              <label className="form-label" htmlFor="assessment-name">Ime cevovoda</label>
             <input
+                id="assessment-name"
               type="text"
               disabled={isReadOnly || isLocked}
               className="form-control"
@@ -734,9 +719,10 @@ export default function Assessment1({
             />
           </div>
           <div style={{ flex: 1, minWidth: '180px' }}>
-            <label className="form-label">Repozitorij (link)</label>
+              <label className="form-label" htmlFor="assessment-repository">Repozitorij (link)</label>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <input
+                  id="assessment-repository"
                 type="text"
                 disabled={isReadOnly || isLocked}
                 className="form-control"

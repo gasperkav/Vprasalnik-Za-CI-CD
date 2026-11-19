@@ -1,0 +1,38 @@
+name: zk-e2e
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: vprasalnik
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: zk-e2e-local-only
+    tmpfs:
+      - /var/lib/postgresql/data
+    volumes:
+      - ../../vprasalnik.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: [CMD, pg_isready, -h, 127.0.0.1, -U, postgres, -d, vprasalnik]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  backend:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.backend
+    ports:
+      - "127.0.0.1:18083:3002"
+    environment:
+      PORT: 3002
+      JWT_SECRET: zk-e2e-test-signing-key
+      FRONTEND_ORIGIN: http://127.0.0.1:4173
+      DATABASE_URL: postgresql://postgres:zk-e2e-local-only@db:5432/vprasalnik
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, "http://127.0.0.1:3002/health"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

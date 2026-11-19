@@ -150,7 +150,7 @@ export default function LandingPage({ enterAsGuest, enterAsAdmin, initialShowLog
 
       {showAuth && (
         <div id="login-overlay" onClick={e => { if (e.target === e.currentTarget) closeAuth(); }}>
-          <div className="card login-card">
+          <div className="card login-card" role="dialog" aria-modal="true" aria-label="Uporabniški račun">
             <div className="auth-tabs">
               {authTab === 'set_password' ? (
                 <div style={{ padding: '10px', fontSize: '1rem', fontWeight: 'bold', color: 'var(--accent-color)', textAlign: 'center', width: '100%' }}>
@@ -180,8 +180,9 @@ export default function LandingPage({ enterAsGuest, enterAsAdmin, initialShowLog
                   Prijavite se za shranjevanje in upravljanje CI/CD ocenjevanj.
                 </p>
                 <div className="form-group">
-                  <label className="form-label">Uporabniško ime</label>
+                  <label className="form-label" htmlFor="login-username">Uporabniško ime</label>
                   <input
+                    id="login-username"
                     type="text"
                     className="form-control"
                     placeholder="admin"
@@ -192,8 +193,9 @@ export default function LandingPage({ enterAsGuest, enterAsAdmin, initialShowLog
                   />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Geslo</label>
+                  <label className="form-label" htmlFor="login-password">Geslo</label>
                   <input
+                    id="login-password"
                     type="password"
                     className="form-control"
                     placeholder="••••••••"
@@ -224,8 +226,9 @@ export default function LandingPage({ enterAsGuest, enterAsAdmin, initialShowLog
                   Ustvarite nov račun za dostop do vseh funkcij platforme.
                 </p>
                 <div className="form-group">
-                  <label className="form-label">Uporabniško ime *</label>
+                  <label className="form-label" htmlFor="register-username">Uporabniško ime *</label>
                   <input
+                    id="register-username"
                     type="text"
                     className="form-control"
                     placeholder="janez.novak"
@@ -235,8 +238,9 @@ export default function LandingPage({ enterAsGuest, enterAsAdmin, initialShowLog
                   />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">E-poštni naslov</label>
+                  <label className="form-label" htmlFor="register-email">E-poštni naslov</label>
                   <input
+                    id="register-email"
                     type="email"
                     className="form-control"
                     placeholder="janez@podjetje.si"
@@ -246,8 +250,9 @@ export default function LandingPage({ enterAsGuest, enterAsAdmin, initialShowLog
                 </div>
                 <div className="responsive-grid-2" style={{ gap: '12px', marginBottom: '18px' }}>
                   <div>
-                    <label className="form-label">Geslo *</label>
+                    <label className="form-label" htmlFor="register-password">Geslo *</label>
                     <input
+                      id="register-password"
                       type="password"
                       className="form-control"
                       placeholder="Min. 6 znakov"
@@ -256,8 +261,9 @@ export default function LandingPage({ enterAsGuest, enterAsAdmin, initialShowLog
                     />
                   </div>
                   <div>
-                    <label className="form-label">Potrdi geslo *</label>
+                    <label className="form-label" htmlFor="register-confirm">Potrdi geslo *</label>
                     <input
+                      id="register-confirm"
                       type="password"
                       className="form-control"
                       placeholder="••••••••"

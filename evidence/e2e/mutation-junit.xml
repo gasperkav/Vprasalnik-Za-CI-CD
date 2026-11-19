@@ -1,0 +1,61 @@
+<testsuites id="" name="" tests="3" failures="1" skipped="0" errors="0" time="46.867557">
+<testsuite name="questionnaire.spec.js" timestamp="2026-11-18T11:51:05.460Z" hostname="" tests="3" failures="1" skipped="0" time="40.707" errors="0">
+<testcase name="TS-01 — registracija, prijava in seja" classname="questionnaire.spec.js" time="16.312">
+</testcase>
+<testcase name="TS-02 — gost, konfiguracija in navigacija" classname="questionnaire.spec.js" time="13.056">
+<failure message="questionnaire.spec.js:200:1 TS-02 — gost, konfiguracija in navigacija" type="FAILURE">
+<![CDATA[  questionnaire.spec.js:200:1 › TS-02 — gost, konfiguracija in navigacija › Q1/R1, izračun stopnje in prepoved shranjevanja gosta 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: getByRole('heading', { name: /^Stopnja /, level: 4 })
+    Expected pattern: /^Stopnja 1 \(Nivo 1 [-–] Regresiven\)$/
+    Received string:  "Stopnja 2 (Nivo 1 – Regresiven)"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveText" with timeout 5000ms
+      - waiting for getByRole('heading', { name: /^Stopnja /, level: 4 })
+        9 × locator resolved to <h4>Stopnja 2 (Nivo 1 – Regresiven)</h4>
+          - unexpected value "Stopnja 2 (Nivo 1 – Regresiven)"
+
+
+      226 |     await pipelineName(page).fill('QA-ZK-GOST');
+      227 |     await page.getByRole('button', { name: 'Izračunaj zrelost' }).click();
+    > 228 |     await expect(maturityResult).toHaveText(/^Stopnja 1 \(Nivo 1 [-–] Regresiven\)$/);
+          |                                  ^
+      229 |     await expectNotice(page, page.getByRole('button', { name: /Shrani ocenjevanje/ }),
+      230 |       'Za shranjevanje se morate prijaviti.');
+      231 |     await expect(dashboard(page)).toBeVisible();
+        at D:\FAKS_3\ZK\VAJE\Vprasalnik-Za-CI-CD\tests\e2e\questionnaire.spec.js:228:34
+        at D:\FAKS_3\ZK\VAJE\Vprasalnik-Za-CI-CD\tests\e2e\questionnaire.spec.js:220:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\artifacts\e2e\mutated\failures\questionnaire-TS-02-—-gost-konfiguracija-in-navigacija\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\artifacts\e2e\mutated\failures\questionnaire-TS-02-—-gost-konfiguracija-in-navigacija\error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\..\artifacts\e2e\mutated\failures\questionnaire-TS-02-—-gost-konfiguracija-in-navigacija\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\..\artifacts\e2e\mutated\failures\questionnaire-TS-02-—-gost-konfiguracija-in-navigacija\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|failures\questionnaire-TS-02-—-gost-konfiguracija-in-navigacija\test-failed-1.png]]
+
+[[ATTACHMENT|failures\questionnaire-TS-02-—-gost-konfiguracija-in-navigacija\error-context.md]]
+
+[[ATTACHMENT|failures\questionnaire-TS-02-—-gost-konfiguracija-in-navigacija\trace.zip]]
+]]>
+</system-out>
+</testcase>
+<testcase name="TS-03 — pogojni obrazec in ohranitev vnosov" classname="questionnaire.spec.js" time="11.339">
+</testcase>
+</testsuite>
+</testsuites>

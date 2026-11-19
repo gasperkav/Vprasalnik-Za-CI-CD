@@ -13,7 +13,8 @@
     "test:system": "node tests/performance/run.mjs all",
     "test:system:smoke": "node tests/performance/run.mjs smoke",
     "test:system:load": "node tests/performance/run.mjs load",
-    "test:system:stress": "node tests/performance/run.mjs stress"
+    "test:system:stress": "node tests/performance/run.mjs stress",
+    "test:e2e": "playwright test"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   "homepage": "https://github.com/Timotejlipic/Vprasalnik-Za-CI-CD#readme",
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
+    "playwright": "1.57.0",
     "tailwindcss": "^4.3.0",
     "vite": "^8.0.12"
   },

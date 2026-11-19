@@ -2,6 +2,8 @@
 
 Sistemsko in zmogljivostno testiranje (ZK 4): [načrt, izvedba in rezultati](README_ZK_4.md).
 
+Avtomatizirano funkcionalno testiranje (ZK 5) je opisano v [poročilu o Playwrightu, zagonu in rezultatih](README_ZK_5.md).
+
 ## Namen projekta
 
 Projekt je spletna aplikacija za strukturirano popisovanje CI/CD cevovodov in izračun njihove stopnje zrelosti.

@@ -217,14 +217,14 @@ function NewAssessmentModal({ questionnaires, rulesVersions = [], userRole, onSt
 
   return (
     <div className="modal-overlay" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="modal-card" style={{ maxWidth: '660px', maxHeight: '140vh', overflowY: 'auto' }}>
+      <div className="modal-card" role="dialog" aria-modal="true" aria-labelledby="new-assessment-title" style={{ maxWidth: '660px', maxHeight: '140vh', overflowY: 'auto' }}>
         <div className="modal-header">
-          <h3>Novo ocenjevanje</h3>
+          <h3 id="new-assessment-title">Novo ocenjevanje</h3>
           <button className="btn btn-ghost" style={{ padding: '4px 8px' }} onClick={onClose}>X</button>
         </div>
 
         <div style={{ marginBottom: '18px' }}>
-          <label className="form-label" style={{ marginBottom: '8px', display: 'block', fontWeight: 600 }}>
+          <label htmlFor="new-assessment-questionnaire" className="form-label" style={{ marginBottom: '8px', display: 'block', fontWeight: 600 }}>
             Vprašalnik (obrazec) *
           </label>
 
@@ -242,6 +242,7 @@ function NewAssessmentModal({ questionnaires, rulesVersions = [], userRole, onSt
             </div>
           ) : (
             <select
+              id="new-assessment-questionnaire"
               className="form-control"
               value={selectedQ || ''}
               onChange={e => setSelectedQ(e.target.value)}
@@ -266,7 +267,7 @@ function NewAssessmentModal({ questionnaires, rulesVersions = [], userRole, onSt
         </div>
 
         <div style={{ marginBottom: '24px' }}>
-          <label className="form-label" style={{ marginBottom: '8px', display: 'block', fontWeight: 600 }}>
+          <label htmlFor="new-assessment-rules" className="form-label" style={{ marginBottom: '8px', display: 'block', fontWeight: 600 }}>
             Pravila zrelosti *
           </label>
 
@@ -284,6 +285,7 @@ function NewAssessmentModal({ questionnaires, rulesVersions = [], userRole, onSt
             </div>
           ) : (
             <select
+              id="new-assessment-rules"
               className="form-control"
               value={selectedR || ''}
               onChange={e => setSelectedR(e.target.value)}

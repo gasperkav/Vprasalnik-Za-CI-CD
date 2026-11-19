@@ -56,3 +56,6 @@ coverage/
 tests/performance/.account.local
 tests/performance/.account-*.local
 tests/performance/.runner.lock
+
+# Generated Playwright reports and failure attachments
+/artifacts/e2e/
